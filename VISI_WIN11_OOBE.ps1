@@ -80,7 +80,7 @@ $OOBEDeployJson = @'
                       "IsPresent":  false
                   },
     "Autopilot":  {
-                      "IsPresent":  true
+                      "IsPresent":  false
                   },
     "RemoveAppx":  [
                     "MicrosoftTeams",
