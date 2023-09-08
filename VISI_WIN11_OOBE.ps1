@@ -83,13 +83,14 @@ Write-Host ""
 Write-Host -ForegroundColor Green "Create C:\ProgramData\OSDeploy\OSDeploy.AutopilotOOBE.json"
 $AutopilotOOBEJson = @"
 {
-    "AssignedComputerName" : "$AssignedComputerName",
+     : "$AssignedComputerName",
     "AddToGroup":  "AADGroupX",
     "Assign":  {
                    "IsPresent":  true
                },
-    "GroupTag":  "GroupTagXXX",
+    "GroupTag":  "InCloud",
     "Hidden":  [
+                   "AssignedComputerName",
                    "AddToGroup",
                    "AssignedUser",
                    "PostAction",
