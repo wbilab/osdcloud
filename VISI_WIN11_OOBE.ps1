@@ -118,29 +118,21 @@ $OOBEDeployJson | Out-File -FilePath "C:\ProgramData\OSDeploy\OSDeploy.OOBEDeplo
 #================================================
 #  [PostOS] AutopilotOOBE Configuration Staging
 #================================================
-Write-Host -ForegroundColor Green "Define Computername:"
-$Serial = Get-WmiObject Win32_bios | Select-Object -ExpandProperty SerialNumber
-$TargetComputername = $Serial.Substring(4,3)
-
-$AssignedComputerName = "AkosCloud-$TargetComputername"
-Write-Host -ForegroundColor Red $AssignedComputerName
-Write-Host ""
 
 Write-Host -ForegroundColor Green "Create C:\ProgramData\OSDeploy\OSDeploy.AutopilotOOBE.json"
 $AutopilotOOBEJson = @"
 {
-    "AddToGroup":  "AADGroupX",
+    "AssignedComputerName" : "",
+    "AddToGroup":  "",
     "Assign":  {
                    "IsPresent":  true
                },
-    "GroupTag":  "InCloud",
+    "GroupTag":  "InCloud, Hybrid",
     "Hidden":  [
                    "AssignedComputerName",
                    "AddToGroup",
                    "AssignedUser",
-                   "PostAction",
-                   "GroupTag",
-                   "Assign"
+                   "PostAction"
                ],
     "PostAction":  "Quit",
     "Run":  "NetworkingWireless",
