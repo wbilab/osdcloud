@@ -10,7 +10,10 @@ else{
     Set-DisRes 1900
 }
 
+
 Write-Host -ForegroundColor Green "Updating OSD PowerShell Module"
+Get-Module PowerShellGet -ListAvailable
+Get-PSRepository
 Install-Module OSD -Force
 
 Write-Host  -ForegroundColor Green "Importing OSD PowerShell Module"
