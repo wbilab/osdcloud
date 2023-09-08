@@ -122,22 +122,25 @@ $OOBEDeployJson | Out-File -FilePath "C:\ProgramData\OSDeploy\OSDeploy.OOBEDeplo
 Write-Host -ForegroundColor Green "Create C:\ProgramData\OSDeploy\OSDeploy.AutopilotOOBE.json"
 $AutopilotOOBEJson = @"
 {
-    "AssignedComputerName" : "",
+    "AssignedComputerName": "",
     "AddToGroup":  "",
     "Assign":  {
                    "IsPresent":  true
                },
-    "GroupTag":  "InCloud, Hybrid",
+    "GroupTag":  "",
     "Hidden":  [
                    "AssignedComputerName",
                    "AddToGroup",
                    "AssignedUser",
-                   "PostAction"
+                   "PostAction",
+                   "Run",
+                   "Docs",
+                   "Assign"
                ],
     "PostAction":  "Quit",
     "Run":  "NetworkingWireless",
     "Docs":  "https://google.com/",
-    "Title":  "Autopilot Manual Register"
+    "Title":  "Autopilot Registration"
 }
 "@
 
@@ -158,7 +161,7 @@ Start /Wait PowerShell -NoL -C Install-Module OSD -Force -Verbose
 Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/AkosBakos/OSDCloud/main/Set-KeyboardLanguage.ps1
 Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://check-autopilotprereq.osdcloud.ch
 Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://start-autopilotoobe.osdcloud.ch
-Start /Wait PowerShell -NoL -C Start-OOBEDeploy
+Start /Wait PowerShell -NoL -C Start-OOBEDeploy -GroupTagOptions "InCloud","Hybrid"
 Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://tpm.osdcloud.ch
 Start /Wait PowerShell -NoL -C Invoke-WebPSScript https://cleanup.osdcloud.ch
 Start /Wait PowerShell -NoL -C Restart-Computer -Force
