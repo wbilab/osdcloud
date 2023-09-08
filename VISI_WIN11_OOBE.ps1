@@ -2,8 +2,12 @@
 #   [PreOS] Update Module
 #================================================
 if ((Get-MyComputerModel) -match 'Virtual') {
-    Write-Host  -ForegroundColor Green "Setting Display Resolution to 1600x"
+    Write-Host  -ForegroundColor Green "Setting Display Resolution for VM to 1600x"
     Set-DisRes 1600
+}
+else{
+    Write-Host  -ForegroundColor Green "Setting Display Resolution for VM to 1600x"
+    Set-DisRes 1900
 }
 
 Write-Host -ForegroundColor Green "Updating OSD PowerShell Module"
