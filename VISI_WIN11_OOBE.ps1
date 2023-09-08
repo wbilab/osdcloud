@@ -12,7 +12,7 @@ else{
 
 
 Write-Host -ForegroundColor Green "Updating OSD PowerShell Module"
-Install-Module –Name PowerShellGet –Force
+Install-Module PowerShellGet -Force -SkipPublisherCheck
 Install-Module OSD -Force -SkipPublisherCheck
 
 Write-Host  -ForegroundColor Green "Importing OSD PowerShell Module"
