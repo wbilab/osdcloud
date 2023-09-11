@@ -4,7 +4,11 @@ Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\.NETFramework\v4.0.30319' -Name
 
 Add-Type -AssemblyName System.Windows.Forms
 $systemDrive = $env:SystemDrive
-$workingDirectory = Join-Path $systemDrive "OSDCloud\Config\VISI"
+$workingDirectory = Join-Path $systemDrive "OSDCloud\Scripts"
+
+Write-Host -ForegroundColor Gray "Copy Logo from GitHub Repo"
+Invoke-WebRequest "https://github.com/wbilab/osdcloud/blob/main/Vi_Logo.png" -OutFile "$workingDirectory\Vi_Logo.png"
+Save-Script -Name Get-WindowsAutoPilotInfo -Path $workingDirectory -Force -Verbose
 
 # Erstelle das Hauptfenster
 $Form = New-Object System.Windows.Forms.Form
@@ -22,7 +26,7 @@ $LabelTitle.Font = New-Object System.Drawing.Font("Arial", 11)
 
 # Erstelle den Platz für das Logo
 $LogoPictureBox = New-Object System.Windows.Forms.PictureBox
-$LogoPictureBox.Image = [System.Drawing.Image]::FromFile("$PSScriptRoot\Vi_Logo.png")
+$LogoPictureBox.Image = [System.Drawing.Image]::FromFile("$workingDirectory\Vi_Logo.png")
 $LogoPictureBox.SizeMode = "AutoSize"
 $LogoPictureBox.Location = New-Object System.Drawing.Point(10, 20)
 
