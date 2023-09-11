@@ -15,16 +15,54 @@ Import-Module OSD -Force
 #=======================================================================
 #   [OS] Params and Start-OSDCloud
 #=======================================================================
-$Params = @{
-    OSVersion = "Windows 11"
-    OSBuild = "22H2"
-    OSEdition = "Pro"
-    OSLanguage = "en-us"
-    OSLicense = "Retail"
-    ZTI = $true
-    Firmware = $false
+Write-Host -ForegroundColor Green "Create X:\OSDCloud\Automate\Start-OSDCloudGUI.json"
+$OSDCloudGUIParam = @'
+{
+    "BrandName":  "",
+    "OSActivation":  "Retail",
+    "OSEdition":  "Pro",
+    "OSLanguage":  "de-de",
+    "OSImageIndex":  9,
+    "OSName":  "Windows 11 22H2 x64",
+    "OSReleaseID":  "22H2",
+    "OSVersion":  "Windows 11",
+    "OSActivationValues":  [
+                                "Retail",
+                                "Volume"
+                            ],
+    "OSEditionValues":  [
+                            "Enterprise",
+                            "Pro"
+                        ],
+    "OSLanguageValues":  [
+                                "de-de",
+                                "fr-fr"
+                            ],
+    "OSNameValues":  [
+                            "Windows 11 22H2 x64",
+                            "Windows 10 22H2 x64"
+                        ],
+    "OSReleaseIDValues":  [
+                                "22H2"
+                            ],
+    "OSVersionValues":  [
+                            "Windows 11",
+                            "Windows 10"
+                        ],
+    "ClearDiskConfirm":  false,
+    "restartComputer":  true,
+    "updateDiskDrivers":  true,
+    "updateFirmware":  true,
+    "updateNetworkDrivers":  true,
+    "updateSCSIDrivers":  true
 }
-Start-OSDCloud @Params
+'@
+If (!(Test-Path "X:\OSDCloud\Automate")) {
+    New-Item "X:\OSDCloud\Automate" -ItemType Directory -Force | Out-Null
+}
+$OSDCloudGUIParam | Out-File -FilePath "X:\OSDCloud\Automate\Start-OSDCloudGUI.json" -Encoding ascii -Force
+
+Start-OSDCloudGUI
 
 #================================================
 #  [PostOS] AutopilotOOBE Configuration Staging
