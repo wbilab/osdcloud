@@ -34,7 +34,7 @@ $LogoPictureBox.Image = [System.Drawing.Image]::FromFile($logo)
 $LogoPictureBox.SizeMode = "AutoSize"
 $LogoPictureBox.Location = New-Object System.Drawing.Point(10, 20)
 
-# Erstelle den ersten Button (quadratisch und größer)
+# Erstelle den ersten Button (quadratisch und groesser)
 $Button1 = New-Object System.Windows.Forms.Button
 $Button1.Text = "AutoPilot InCloud"
 $Button1.Size = New-Object System.Drawing.Size(80, 80)
@@ -46,7 +46,7 @@ cd $workingDirectory
 .\Get-WindowsAutoPilotInfo.ps1 -GroupTag InCloud -Online -Assign
 })
 
-# Erstelle den zweiten Button (quadratisch und größer)
+# Erstelle den zweiten Button (quadratisch und groesser)
 $Button2 = New-Object System.Windows.Forms.Button
 $Button2.Text = "AutoPilot Hybrid"
 $Button2.Size = New-Object System.Drawing.Size(80, 80)
@@ -83,13 +83,13 @@ cd $workingDirectory
 
 })
 
-# Erstelle den driten Button (quadratisch und größer)
+# Erstelle den driten Button (quadratisch und groesser)
 $Button3 = New-Object System.Windows.Forms.Button
 $Button3.Text = "Windows Neinstallation"
 $Button3.Size = New-Object System.Drawing.Size(80, 80)
 $Button3.Location = New-Object System.Drawing.Point(310, 120)
 $Button3.Add_Click({
-    $Form.Close() # Schließe das Programm
+    $Form.Close() # Schliesse das Programm
 })
 
 # Füge die Steuerelemente dem Hauptfenster hinzu
