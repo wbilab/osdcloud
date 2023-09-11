@@ -8,7 +8,7 @@ $workingDirectory = Join-Path $systemDrive "OSDCloud\Scripts"
 $logo =  Join-Path $workingDirectory "\Vi_Logo.png"
 
 Write-Host -ForegroundColor Gray "Copy Logo from GitHub Repo"
-Invoke-WebRequest https://github.com/wbilab/osdcloud/blob/83f30c367c7d6b03bb2db2e9f4312ea6604a9601/Vi_Logo.png -OutFile $logo
+Invoke-WebRequest https://github.com/wbilab/osdcloud/blob/83f30c367c7d6b03bb2db2e9f4312ea6604a9601/Vi_Logo.png -OutFile $workingDirectory
 
 Save-Script -Name Get-WindowsAutoPilotInfo -Path $workingDirectory -Force
 
