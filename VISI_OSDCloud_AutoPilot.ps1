@@ -21,7 +21,7 @@ $Form.MaximizeBox = $false
 $Form.StartPosition = "CenterScreen"
 
 
-# Erstelle den Titel mit größerer Schriftart
+# Erstelle den Titel mit groesserer Schriftart
 $LabelTitle = New-Object System.Windows.Forms.Label
 $LabelTitle.Text = "Bitte wählen Sie die gewünschte Funktion:"
 $LabelTitle.Location = New-Object System.Drawing.Point(10, 70)
