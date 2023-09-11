@@ -26,7 +26,7 @@ $LabelTitle.Font = New-Object System.Drawing.Font("Arial", 11)
 
 # Erstelle den Platz für das Logo
 $LogoPictureBox = New-Object System.Windows.Forms.PictureBox
-$LogoPictureBox.Image = [System.Drawing.Image]::FromFile("$workingDirectory\Vi_Logo.png")
+$LogoPictureBox.Image = [System.Drawing.Image]::FromFile($workingDirectory"\Vi_Logo.png")
 $LogoPictureBox.SizeMode = "AutoSize"
 $LogoPictureBox.Location = New-Object System.Drawing.Point(10, 20)
 
