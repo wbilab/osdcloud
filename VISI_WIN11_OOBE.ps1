@@ -85,15 +85,7 @@ $AutopilotOOBEJson = @"
     "Assign":  {
                    "IsPresent":  true
                },
-    "GroupTag": [
-                   "InCloud",
-                   "Hybrid",
-                   "Thinclient",
-                   "CH",
-                   "DE",
-                   "AT",
-                   ""
-               ],
+    "GroupTag": "",
     "Hidden":  [
                    "AssignedComputerName",
                    "AddToGroup",
