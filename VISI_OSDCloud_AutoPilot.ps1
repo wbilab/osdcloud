@@ -13,8 +13,8 @@ Save-Script -Name Get-WindowsAutoPilotInfo -Path $workingDirectory -Force -Verbo
 
 # Erstelle das Hauptfenster
 $Form = New-Object System.Windows.Forms.Form
-$Form.Text = "OSDCloud"
-$Form.Size = New-Object System.Drawing.Size(420, 250)
+$Form.Text = "VISI AutoPilot Registrierung"
+$Form.Size = New-Object System.Drawing.Size(620, 450)
 $Form.FormBorderStyle = "FixedDialog"
 $Form.MaximizeBox = $false
 
