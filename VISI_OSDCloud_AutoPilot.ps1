@@ -8,6 +8,7 @@ $workingDirectory = Join-Path $systemDrive "OSDCloud\Scripts"
 
 Write-Host -ForegroundColor Gray "Copy Logo from GitHub Repo"
 Invoke-WebRequest https://github.com/wbilab/osdcloud/blob/83f30c367c7d6b03bb2db2e9f4312ea6604a9601/Vi_Logo.png -OutFile $workingDirectory"\Vi_Logo.png"
+$logo = $workingDirectory"\Vi_Logo.png"
 Save-Script -Name Get-WindowsAutoPilotInfo -Path $workingDirectory -Force -Verbose
 
 # Erstelle das Hauptfenster
@@ -26,7 +27,7 @@ $LabelTitle.Font = New-Object System.Drawing.Font("Arial", 11)
 
 # Erstelle den Platz für das Logo
 $LogoPictureBox = New-Object System.Windows.Forms.PictureBox
-$LogoPictureBox.Image = [System.Drawing.Image]::FromFile($workingDirectory"\Vi_Logo.png")
+$LogoPictureBox.Image = [System.Drawing.Image]::FromFile($logo)
 $LogoPictureBox.SizeMode = "AutoSize"
 $LogoPictureBox.Location = New-Object System.Drawing.Point(10, 20)
 
