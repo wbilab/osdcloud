@@ -17,6 +17,8 @@ $Form.Text = "VISI AutoPilot Registrierung"
 $Form.Size = New-Object System.Drawing.Size(620, 450)
 $Form.FormBorderStyle = "FixedDialog"
 $Form.MaximizeBox = $false
+$Form.StartPosition = "CenterScreen"
+
 
 # Erstelle den Titel mit größerer Schriftart
 $LabelTitle = New-Object System.Windows.Forms.Label
