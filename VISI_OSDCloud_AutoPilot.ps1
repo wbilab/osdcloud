@@ -11,6 +11,7 @@ $logoPathInRepo = "blob/main/Vi_Logo.png"
 
 # Konstruieren Sie die Raw-URL des Bildes im Repository
 $rawImageUrl = "$repoUrl/raw/master/$logoPathInRepo"
+echo $rawImageUrl
 
 Save-Script -Name Get-WindowsAutoPilotInfo -Path $workingDirectory -Force
 
