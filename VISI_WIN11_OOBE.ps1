@@ -93,17 +93,19 @@ Write-Host ""
 Write-Host -ForegroundColor Green "Create C:\ProgramData\OSDeploy\OSDeploy.AutopilotOOBE.json"
 $AutopilotOOBEJson = @"
 {
-    "AssignedComputerName" : "$AssignedComputerName",
+    "AssignedComputerName" : "",
     "AddToGroup":  "AADGroupX",
     "Assign":  {
                    "IsPresent":  true
                },
     "GroupTag":  "GroupTagXXX",
     "Hidden":  [
+                   "AssignedComputerName",
                    "AddToGroup",
                    "AssignedUser",
                    "PostAction",
-                   "GroupTag",
+                   "Run",
+                   "Docs",
                    "Assign"
                ],
     "PostAction":  "Quit",
@@ -140,7 +142,7 @@ $OOBECMD | Out-File -FilePath 'C:\Windows\System32\OOBE.cmd' -Encoding ascii -Fo
 Write-Host -ForegroundColor Green "Create C:\Windows\Setup\Scripts\SetupComplete.cmd"
 $SetupCompleteCMD = @'
 powershell.exe -Command Set-ExecutionPolicy RemoteSigned -Force
-powershell.exe -Command "& {IEX (IRM oobetasks.osdcloud.ch)}"
+powershell.exe -Command "& {IEX (IRM https://raw.githubusercontent.com/wbilab/osdcloud/main/oobetasks.ps1)}"
 '@
 $SetupCompleteCMD | Out-File -FilePath 'C:\Windows\Setup\Scripts\SetupComplete.cmd' -Encoding ascii -Force
 
