@@ -12,14 +12,13 @@ $logoPathInRepo = "blob/main/Vi_Logo.png"
 # Konstruieren Sie die Raw-URL des Bildes im Repository
 $rawImageUrl = "$repoUrl/raw/master/$logoPathInRepo"
 
-
 Save-Script -Name Get-WindowsAutoPilotInfo -Path $workingDirectory -Force
 
 # Erstelle das Hauptfenster
 $Form = New-Object System.Windows.Forms.Form
 $Form.Text = "VISI AutoPilot Registrierung"
 $Form.Size = New-Object System.Drawing.Size(620, 450)
-$Form.FormBorderStyle = "FixedDialog""
+$Form.FormBorderStyle = "FixedDialog"
 $Form.MaximizeBox = $false
 $Form.StartPosition = "CenterScreen"
 
@@ -33,7 +32,7 @@ $LabelTitle.Font = New-Object System.Drawing.Font("Arial", 11)
 
 # Erstelle den Platz für das Logo
 $LogoPictureBox = New-Object System.Windows.Forms.PictureBox
-$LogoPictureBox.Image = [System.Drawing.Image]::FromFile($rawImageUrl)
+$LogoPictureBox.Image = [System.Drawing.Image]::FromFile($logo)
 $LogoPictureBox.SizeMode = "AutoSize"
 $LogoPictureBox.Location = New-Object System.Drawing.Point(10, 20)
 
