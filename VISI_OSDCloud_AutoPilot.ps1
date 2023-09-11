@@ -7,7 +7,7 @@ $systemDrive = $env:SystemDrive
 $workingDirectory = Join-Path $systemDrive "OSDCloud\Scripts"
 
 Write-Host -ForegroundColor Gray "Copy Logo from GitHub Repo"
-Invoke-WebRequest "https://github.com/wbilab/osdcloud/blob/main/Vi_Logo.png" -OutFile "$workingDirectory\Vi_Logo.png"
+Invoke-WebRequest https://github.com/wbilab/osdcloud/blob/83f30c367c7d6b03bb2db2e9f4312ea6604a9601/Vi_Logo.png -OutFile $workingDirectory"\Vi_Logo.png"
 Save-Script -Name Get-WindowsAutoPilotInfo -Path $workingDirectory -Force -Verbose
 
 # Erstelle das Hauptfenster
