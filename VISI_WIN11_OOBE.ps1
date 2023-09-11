@@ -67,7 +67,7 @@ $OOBEDeployJson = @'
                     "Microsoft.ZuneVideo"
                    ],
     "UpdateDrivers":  {
-                          "IsPresent":  true
+                          "IsPresent":  false
                       },
     "UpdateWindows":  {
                           "IsPresent":  false
