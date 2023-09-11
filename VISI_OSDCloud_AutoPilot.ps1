@@ -5,10 +5,13 @@ Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\.NETFramework\v4.0.30319' -Name
 Add-Type -AssemblyName System.Windows.Forms
 $systemDrive = $env:SystemDrive
 $workingDirectory = Join-Path $systemDrive "OSDCloud\Scripts"
-$logo =  https://github.com/wbilab/osdcloud/blob/83f30c367c7d6b03bb2db2e9f4312ea6604a9601/Vi_Logo.png
 
-Write-Host -ForegroundColor Gray "Copy Logo from GitHub Repo"
-Invoke-WebRequest https://github.com/wbilab/osdcloud/blob/83f30c367c7d6b03bb2db2e9f4312ea6604a9601/Vi_Logo.png -OutFile $workingDirectory
+$repoUrl = "https://github.com/wbilab/osdcloud"
+$logoPathInRepo = "blob/main/Vi_Logo.png"
+
+# Konstruieren Sie die Raw-URL des Bildes im Repository
+$rawImageUrl = "$repoUrl/raw/master/$logoPathInRepo"
+
 
 Save-Script -Name Get-WindowsAutoPilotInfo -Path $workingDirectory -Force
 
@@ -16,7 +19,7 @@ Save-Script -Name Get-WindowsAutoPilotInfo -Path $workingDirectory -Force
 $Form = New-Object System.Windows.Forms.Form
 $Form.Text = "VISI AutoPilot Registrierung"
 $Form.Size = New-Object System.Drawing.Size(620, 450)
-$Form.FormBorderStyle = "FixedDialog"
+$Form.FormBorderStyle = "FixedDialog""
 $Form.MaximizeBox = $false
 $Form.StartPosition = "CenterScreen"
 
@@ -30,7 +33,7 @@ $LabelTitle.Font = New-Object System.Drawing.Font("Arial", 11)
 
 # Erstelle den Platz für das Logo
 $LogoPictureBox = New-Object System.Windows.Forms.PictureBox
-$LogoPictureBox.Image = [System.Drawing.Image]::FromFile($logo)
+$LogoPictureBox.Image = [System.Drawing.Image]::FromFile($rawImageUrl)
 $LogoPictureBox.SizeMode = "AutoSize"
 $LogoPictureBox.Location = New-Object System.Drawing.Point(10, 20)
 
