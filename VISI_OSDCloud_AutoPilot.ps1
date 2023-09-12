@@ -10,6 +10,8 @@ $workingDirectory = Join-Path $systemDrive "OSDCloud\Scripts"
 $rawImageUrl = "https://raw.githubusercontent.com/wbilab/osdcloud/main/Vi_Logo.png"
 Write-Host -ForegroundColor Gray $rawImageUrl
 Invoke-WebRequest $rawImageUrl -OutFile $workingDirectory"\Vi_Logo.png"
+$logo = Join-Path $workingDirectory "Vi_Logo.png"
+Write-Host -ForegroundColor Gray $logo
 
 Save-Script -Name Get-WindowsAutoPilotInfo -Path $workingDirectory -Force
 
@@ -31,7 +33,7 @@ $LabelTitle.Font = New-Object System.Drawing.Font("Arial", 11)
 
 # Erstelle den Platz für das Logo
 $LogoPictureBox = New-Object System.Windows.Forms.PictureBox
-$LogoPictureBox.Image = [System.Drawing.Image]::FromFile($rawImageUrl)
+$LogoPictureBox.Image = [System.Drawing.Image]::FromFile($logo)
 $LogoPictureBox.SizeMode = "AutoSize"
 $LogoPictureBox.Location = New-Object System.Drawing.Point(10, 20)
 
