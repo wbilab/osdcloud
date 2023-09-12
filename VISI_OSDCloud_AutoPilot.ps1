@@ -26,7 +26,6 @@ $logInhalt = Get-Content -Path $logDateiPfad
 $KeyboardlayoutZeile = $logInhalt | Where-Object { $_ -match "Keyboardlayout" }
 
 
-
 # Teile die Zeile anhand des Doppelpunkts (:) auf, um den Wert zu extrahieren
 $KeyboardlayoutTeile = $KeyboardlayoutZeile -split ":"
 $Keyboardlayout = $KeyboardlayoutTeile[1].Trim()
