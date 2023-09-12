@@ -28,7 +28,7 @@ $Form.StartPosition = "CenterScreen"
 
 # Erstelle den Titel mit groesserer Schriftart
 $LabelTitle = New-Object System.Windows.Forms.Label
-$LabelTitle.Text = [System.Text.Encoding]::UTF8.GetString([System.Text.Encoding]::Default.GetBytes("Bitte wählen Sie die gewünschte Funktion:"))
+$LabelTitle.Text = [System.Text.Encoding]::UTF8.GetString([System.Text.Encoding]::Default.GetBytes("Bitte wählen Sie die gewünschte Funktion:"$($computerInfo.OsSerialNumber)"))
 $LabelTitle.Location = New-Object System.Drawing.Point(10, 70)
 $LabelTitle.AutoSize = $true
 $LabelTitle.Font = New-Object System.Drawing.Font("Arial", 11)
