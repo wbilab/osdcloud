@@ -80,7 +80,7 @@ $LogoPictureBox.Location = New-Object System.Drawing.Point(10, 20)
 
 # Erstelle den ersten Button (quadratisch und groesser)
 $Button1 = New-Object System.Windows.Forms.Button
-$Button1.Text = "AutoPilot InCloud"
+$Button1.Text = "AutoPilot Tag`nInCloud"
 $Button1.Size = New-Object System.Drawing.Size(80, 80)
 $Button1.Location = New-Object System.Drawing.Point(10, 120)
 $Button1.Add_Click({
@@ -93,7 +93,7 @@ $Form.Close() # Schliesse das Programm
 
 # Erstelle den zweiten Button (quadratisch und groesser)
 $Button2 = New-Object System.Windows.Forms.Button
-$Button2.Text = "AutoPilot Hybrid"
+$Button2.Text = "AutoPilot Tag`nHybrid"
 $Button2.Size = New-Object System.Drawing.Size(80, 80)
 $Button2.Location = New-Object System.Drawing.Point(110, 120)
 $Button2.Add_Click({
@@ -107,7 +107,7 @@ $Form.Close() # Schliesse das Programm
 
 # Erstelle die Bezeichnung für das Eingabefeld "Anderes"
 $LabelAnderes = New-Object System.Windows.Forms.Label
-$LabelAnderes.Text = "AutoPilot Tag:"
+$LabelAnderes.Text = "AutoPilot Tag`nBenutzerdefiniert:"
 $LabelAnderes.Location = New-Object System.Drawing.Point(210, 125)
 
 # Erstelle ein Eingabefeld
