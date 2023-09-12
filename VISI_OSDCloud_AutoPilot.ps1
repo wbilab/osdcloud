@@ -2,13 +2,20 @@
 Set-ItemProperty -Path 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework\v4.0.30319' -Name 'SchUseStrongCrypto' -Type DWord -Value '1'
 Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\.NETFramework\v4.0.30319' -Name 'SchUseStrongCrypto' -Type DWord -Value '1'
 
+Add-Type -AssemblyName System.Windows.Forms
+$systemDrive = $env:SystemDrive
+$workingDirectory = Join-Path $systemDrive "OSDCloud\Scripts"
+
+$Global:Transcript = "$((Get-Date).ToString('yyyy-MM-dd-HHmmss'))-Check-AutopilotPrerequisites.log"
+Start-Transcript -Path (Join-Path "$workingDirectory\" $Global:Transcript) -ErrorAction Ignore
+
+Write-Host "Execute Autopilot Prerequitites Check" -ForegroundColor Green
+
 Set-ExecutionPolicy -ExecutionPolicy Bypass -Force
 Install-Script -Name Check-AutopilotPrerequisites -Force
 Check-AutopilotPrerequisites
 
-Add-Type -AssemblyName System.Windows.Forms
-$systemDrive = $env:SystemDrive
-$workingDirectory = Join-Path $systemDrive "OSDCloud\Scripts"
+Stop-Transcript
 
 
 $rawImageUrl = "https://raw.githubusercontent.com/wbilab/osdcloud/main/Vi_Logo.png"
