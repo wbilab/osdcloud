@@ -80,8 +80,8 @@ $LogoPictureBox.Location = New-Object System.Drawing.Point(10, 20)
 
 # Erstelle den ersten Button (quadratisch und groesser)
 $Button1 = New-Object System.Windows.Forms.Button
-$Button1.Text = "AutoPilot Tag`nInCloud"
-$Button1.Size = New-Object System.Drawing.Size(80, 80)
+$Button1.Text = "AutoPilot`nRegistrierung`n`nTag: InCloud"
+$Button1.Size = New-Object System.Drawing.Size(100, 100)
 $Button1.Location = New-Object System.Drawing.Point(10, 120)
 $Button1.Add_Click({
 
@@ -93,9 +93,9 @@ $Form.Close() # Schliesse das Programm
 
 # Erstelle den zweiten Button (quadratisch und groesser)
 $Button2 = New-Object System.Windows.Forms.Button
-$Button2.Text = "AutoPilot Tag`nHybrid"
-$Button2.Size = New-Object System.Drawing.Size(80, 80)
-$Button2.Location = New-Object System.Drawing.Point(110, 120)
+$Button2.Text = "AutoPilot`nRegistrierung`n`nTag: Hybrid"
+$Button2.Size = New-Object System.Drawing.Size(100, 100)
+$Button2.Location = New-Object System.Drawing.Point(120, 120)
 $Button2.Add_Click({
 
 $Form.WindowState = "Minimized" # Minimiere das GUI-Fenster
@@ -107,19 +107,26 @@ $Form.Close() # Schliesse das Programm
 
 # Erstelle die Bezeichnung für das Eingabefeld "Anderes"
 $LabelAnderes = New-Object System.Windows.Forms.Label
-$LabelAnderes.Text = "AutoPilot Tag`nBenutzerdefiniert:"
-$LabelAnderes.Location = New-Object System.Drawing.Point(210, 125)
+$LabelAnderes.Text = "AutoPilot`nRegistrierung"
+$LabelAnderes.Size = New-Object System.Drawing.Size(100, 30)
+$LabelAnderes.Location = New-Object System.Drawing.Point(230, 125)
+
+# Erstelle die Bezeichnung für das Eingabefeld "Tag"
+$LabelTag = New-Object System.Windows.Forms.Label
+$LabelTag.Size = New-Object System.Drawing.Size(30, 20)
+$LabelTag.Text = "Tag:"
+$LabelTag.Location = New-Object System.Drawing.Point(230, 170)
 
 # Erstelle ein Eingabefeld
 $InputBox = New-Object System.Windows.Forms.TextBox
-$InputBox.Location = New-Object System.Drawing.Point(210, 145)
-$InputBox.Size = New-Object System.Drawing.Size(80, 30)
+$InputBox.Location = New-Object System.Drawing.Point(260, 165)
+$InputBox.Size = New-Object System.Drawing.Size(70, 50)
 
 # Erstelle die "OK"-Taste
 $OKButton = New-Object System.Windows.Forms.Button
 $OKButton.Text = "OK"
-$OKButton.Size = New-Object System.Drawing.Size(80, 30)
-$OKButton.Location = New-Object System.Drawing.Point(210, 170)
+$OKButton.Size = New-Object System.Drawing.Size(100, 30)
+$OKButton.Location = New-Object System.Drawing.Point(230, 190)
 $OKButton.Add_Click({
 $inputValue = $InputBox.Text
 $Form.WindowState = "Minimized" # Minimiere das GUI-Fenster
@@ -131,8 +138,8 @@ cd $workingDirectory
 # Erstelle den driten Button (quadratisch und groesser)
 $Button3 = New-Object System.Windows.Forms.Button
 $Button3.Text = "AutoPilot Registrierung`nschliessen"
-$Button3.Size = New-Object System.Drawing.Size(80, 80)
-$Button3.Location = New-Object System.Drawing.Point(310, 120)
+$Button3.Size = New-Object System.Drawing.Size(100, 100)
+$Button3.Location = New-Object System.Drawing.Point(350, 120)
 $Button3.Add_Click({
  })
 
@@ -152,6 +159,7 @@ $Form.Controls.Add($LogoPictureBox)
 $Form.Controls.Add($Button1)
 $Form.Controls.Add($Button2)
 $Form.Controls.Add($LabelAnderes)
+$Form.Controls.Add($LabelTag)
 $Form.Controls.Add($InputBox)
 $Form.Controls.Add($OKButton)
 $Form.Controls.Add($Button3)
