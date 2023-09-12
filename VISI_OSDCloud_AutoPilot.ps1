@@ -4,10 +4,12 @@ Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\.NETFramework\v4.0.30319' -Name
 
 Add-Type -AssemblyName System.Windows.Forms
 $systemDrive = $env:SystemDrive
+$workingDirectory = Join-Path $systemDrive "OSDCloud\Scripts"
 
 
 $rawImageUrl = "https://raw.githubusercontent.com/wbilab/osdcloud/main/Vi_Logo.png"
 Write-Host -ForegroundColor Gray $rawImageUrl
+Invoke-WebRequest $rawImageUrl -OutFile $workingDirectory"\Vi_Logo.png"
 
 Save-Script -Name Get-WindowsAutoPilotInfo -Path $workingDirectory -Force
 
