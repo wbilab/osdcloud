@@ -32,13 +32,13 @@ $biosserialnummerZeile = $logInhalt | Where-Object { $_ -match "Bios Serialnumbe
 
 # Teile die Zeile anhand des Doppelpunkts (:) auf, um den Wert zu extrahieren
 $KeyboardlayoutTeile = $KeyboardlayoutZeile -split ":"
-$Keyboardlayout = $KeyboardlayoutTeile [1].Trim()
+$Keyboardlayout = $KeyboardlayoutTeile[1].Trim()
 
 $tpmpresentTeile = $tpmpresentZeile -split ":"
 $tpmpresent = $tpmpresentTeile[1].Trim()
 
 $tpmreadyTeile = $tpmreadyZeile -split ":"
-$tpmready = $tpmreadyTeile [1].Trim()
+$tpmready = $tpmreadyTeile[1].Trim()
 
 $tpmenabledTeile = $tpmenabledZeile -split ":"
 $tpmenabled= $tpmenabledTeile[1].Trim()
