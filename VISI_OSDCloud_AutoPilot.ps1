@@ -157,7 +157,7 @@ $precheck.BorderStyle = [System.Windows.Forms.BorderStyle]::FixedSingle
 
 # Erstellen Sie ein Label für den Countdown-Text
 $LabelClose = New-Object System.Windows.Forms.Label
-$LabelClose.Text = "Das Gerät ist bereits im AutoPilot registriert.`nDas Fenster wird in 15 Sekunden automatisch geschlossen!"
+$LabelClose.Text = [System.Text.Encoding]::UTF8.GetString([System.Text.Encoding]::Default.GetBytes("Das Gerät ist bereits im AutoPilot registriert.`nDas Fenster wird in 15 Sekunden automatisch geschlossen!"))
 $LabelClose.AutoSize = $true
 $LabelClose.ForeColor = [System.Drawing.Color]::Green
 $LabelClose.Location = New-Object System.Drawing.Point(10, 380)
