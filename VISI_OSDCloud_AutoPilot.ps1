@@ -19,26 +19,45 @@ Stop-Transcript
 
 # Pfad zur Logdatei
 $logDateiPfad = (Join-Path "$workingDirectory\" $Global:Transcript)
-
 # Lese die Logdatei
 $logInhalt = Get-Content -Path $logDateiPfad
 
-# Durchsuche den Inhalt nach der Zeile mit "Os Serialnumber" und extrahiere den Wert
-$serialnummerZeile = $logInhalt | Where-Object { $_ -match "Os Serialnumber" }
+# Durchsuche den Inhalt der Log Datei von Autopilot Pre Check und extrahiere den Wert
+$KeyboardlayoutZeile = $logInhalt | Where-Object { $_ -match "Keyboardlayout" }
+$tpmpresentZeile = $logInhalt | Where-Object { $_ -match "Tpm present" }
+$tpmreadyZeile = $logInhalt | Where-Object { $_ -match "Tpm ready" }
+$tpmenabledZeile = $logInhalt | Where-Object { $_ -match "Tpm enabled" }
+$biosserialnummerZeile = $logInhalt | Where-Object { $_ -match "Bios Serialnumber" }
+
 
 # Teile die Zeile anhand des Doppelpunkts (:) auf, um den Wert zu extrahieren
-$serialnummerTeile = $serialnummerZeile -split ":"
-$serialnummer = $serialnummerTeile[1].Trim()
+$KeyboardlayoutTeile = $KeyboardlayoutZeile -split ":"
+$Keyboardlayout = $KeyboardlayoutTeile [1].Trim()
 
-# Die Seriennummer ist jetzt in der Variable $serialnummer gespeichert
+$tpmpresentTeile = $tpmpresentZeile -split ":"
+$tpmpresent = $tpmpresentTeile[1].Trim()
+
+$tpmreadyTeile = $tpmreadyZeile -split ":"
+$tpmready = $tpmreadyTeile [1].Trim()
+
+$tpmenabledTeile = $tpmenabledZeile -split ":"
+$tpmenabled= $tpmenabledTeile[1].Trim()
+
+$biosserialnummerTeile = $biosserialnummerZeile -split ":"
+$biosserialnummer = $biosserialnummerTeile[1].Trim()
+
+
 # Sie können sie verwenden, wie Sie möchten
-Write-Host "Die OS Seriennummer ist: $serialnummer"
+Write-Host "Keyboardlayout: $Keyboardlayout"
+Write-Host "Tpm present: $tpmpresent "
+Write-Host "Tpm ready: $tpmready"
+Write-Host "DTpm enabled: $tpmenabled"
+Write-Host "Die BIOS Seriennummer ist: $biosserialnummer"
+
 
 $rawImageUrl = "https://raw.githubusercontent.com/wbilab/osdcloud/main/Vi_Logo.png"
 Invoke-WebRequest $rawImageUrl -OutFile $workingDirectory"\Vi_Logo.png"
 $logo = Join-Path $workingDirectory "Vi_Logo.png"
-
-Write-Host "  Os Serialnumber :     $($computerInfo.OsSerialNumber)"
 
 Save-Script -Name Get-WindowsAutoPilotInfo -Path $workingDirectory -Force
 
