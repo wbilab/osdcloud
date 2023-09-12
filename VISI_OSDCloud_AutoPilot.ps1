@@ -132,7 +132,7 @@ $inputValue = $InputBox.Text
 $Form.WindowState = "Minimized" # Minimiere das GUI-Fenster
 cd $workingDirectory
 .\Get-WindowsAutoPilotInfo.ps1 -GroupTag $inputValue -Online -Assign
-
+$Form.Close() # Schliesse das Programm
 })
 
 # Erstelle den driten Button (quadratisch und groesser)
@@ -141,6 +141,7 @@ $Button3.Text = "AutoPilot Registrierung`nschliessen"
 $Button3.Size = New-Object System.Drawing.Size(100, 100)
 $Button3.Location = New-Object System.Drawing.Point(350, 120)
 $Button3.Add_Click({
+$Form.Close() # Schliesse das Programm
  })
 
 $precheckText = "Autopilot PreCheck Results:`n`nKeyboardlayout: $Keyboardlayout`nTpm present: $tpmpresent`nTpm ready: $tpmready`nTpm enabled: $tpmenabled`nSerienumber: $biosserialnummer`nAutoPilot Registration: $approfile"
