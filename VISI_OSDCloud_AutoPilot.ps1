@@ -24,27 +24,13 @@ $logInhalt = Get-Content -Path $logDateiPfad
 
 # Durchsuche den Inhalt der Log Datei von Autopilot Pre Check und extrahiere den Wert
 $KeyboardlayoutZeile = $logInhalt | Where-Object { $_ -match "Keyboardlayout" }
-$tpmpresentZeile = $logInhalt | Where-Object { $_ -match "Tpm present" }
-$tpmreadyZeile = $logInhalt | Where-Object { $_ -match "Tpm ready" }
-$tpmenabledZeile = $logInhalt | Where-Object { $_ -match "Tpm enabled" }
-$biosserialnummerZeile = $logInhalt | Where-Object { $_ -match "Bios Serialnumber" }
+
 
 
 # Teile die Zeile anhand des Doppelpunkts (:) auf, um den Wert zu extrahieren
 $KeyboardlayoutTeile = $KeyboardlayoutZeile -split ":"
 $Keyboardlayout = $KeyboardlayoutTeile[1].Trim()
 
-$tpmpresentTeile = $tpmpresentZeile -split ":"
-$tpmpresent = $tpmpresentTeile[1].Trim()
-
-$tpmreadyTeile = $tpmreadyZeile -split ":"
-$tpmready = $tpmreadyTeile[1].Trim()
-
-$tpmenabledTeile = $tpmenabledZeile -split ":"
-$tpmenabled= $tpmenabledTeile[1].Trim()
-
-$biosserialnummerTeile = $biosserialnummerZeile -split ":"
-$biosserialnummer = $biosserialnummerTeile[1].Trim()
 
 
 # Sie können sie verwenden, wie Sie möchten
