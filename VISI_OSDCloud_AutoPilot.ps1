@@ -2,6 +2,9 @@
 Set-ItemProperty -Path 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework\v4.0.30319' -Name 'SchUseStrongCrypto' -Type DWord -Value '1'
 Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\.NETFramework\v4.0.30319' -Name 'SchUseStrongCrypto' -Type DWord -Value '1'
 
+# Setze die Zeichencodierung auf UTF-8
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+
 Add-Type -AssemblyName System.Windows.Forms
 $systemDrive = $env:SystemDrive
 $workingDirectory = Join-Path $systemDrive "OSDCloud\Scripts"
