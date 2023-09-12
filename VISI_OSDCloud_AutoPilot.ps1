@@ -11,7 +11,7 @@ Start-Transcript -Path (Join-Path "$workingDirectory\" $Global:Transcript) -Erro
 
 Write-Host "Execute Autopilot Prerequitites Check" -ForegroundColor Green
 
-Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Force
 Install-Script -Name Check-AutopilotPrerequisites -Force
 Check-AutopilotPrerequisites
 
@@ -28,6 +28,7 @@ $tpmpresentZeile = $logInhalt | Where-Object { $_ -match "Tpm present" }
 $tpmreadyZeile = $logInhalt | Where-Object { $_ -match "Tpm ready" }
 $tpmenabledZeile = $logInhalt | Where-Object { $_ -match "Tpm enabled" }
 $biosserialnummerZeile = $logInhalt | Where-Object { $_ -match "Bios Serialnumber" }
+$approfileZeile = $logInhalt | Where-Object { $_ -match "Cached AP Profile" }
 
 
 # Teile die Zeile anhand des Doppelpunkts (:) auf, um den Wert zu extrahieren
@@ -45,6 +46,9 @@ $tpmenabled= $tpmenabledTeile[1].Trim()
 
 $biosserialnummerTeile = $biosserialnummerZeile -split ":"
 $biosserialnummer = $biosserialnummerTeile[1].Trim()
+
+$approfileTeile = $approfileZeile -split ":"
+$approfile = $approfileTeile[1].Trim()
 
 
 # Sie können sie verwenden, wie Sie möchten
@@ -64,7 +68,7 @@ Save-Script -Name Get-WindowsAutoPilotInfo -Path $workingDirectory -Force
 # Erstelle das Hauptfenster
 $Form = New-Object System.Windows.Forms.Form
 $Form.Text = "VISI AutoPilot Registrierung"
-$Form.Size = New-Object System.Drawing.Size(620, 450)
+$Form.Size = New-Object System.Drawing.Size(520, 450)
 $Form.FormBorderStyle = "FixedDialog"
 $Form.MaximizeBox = $false
 $Form.StartPosition = "CenterScreen"
@@ -141,14 +145,14 @@ $Button3.Add_Click({
     $Form.Close() # Schliesse das Programm
 })
 
-$precheckText = "Keyboardlayout: $Keyboardlayout`nTpm present: $tpmpresent`nTpm ready: $tpmready`nTpm enabled: $tpmenabled`nSerienumber: $biosserialnummer"
+$precheckText = "Autopilot PreCheck Results:`n`nKeyboardlayout: $Keyboardlayout`nTpm present: $tpmpresent`nTpm ready: $tpmready`nTpm enabled: $tpmenabled`nSerienumber: $biosserialnummer`nAutoPilot Registration: $approfile"
 
 # Erstellen Sie ein Label mit Rahmen und dem Text mit 5 Zeilen
 $precheck = New-Object Windows.Forms.Label
 $precheck.Text = $precheckText
 $precheck.Width = 380
-$precheck.Height = 100
-$precheck.Location = New-Object Drawing.Point(10, 310)
+$precheck.Height = 120
+$precheck.Location = New-Object Drawing.Point(10, 250)
 $precheck.BorderStyle = [System.Windows.Forms.BorderStyle]::FixedSingle
 
 # Füge die Steuerelemente dem Hauptfenster hinzu
