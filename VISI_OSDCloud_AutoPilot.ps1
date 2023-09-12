@@ -11,7 +11,7 @@ Start-Transcript -Path (Join-Path "$workingDirectory\" $Global:Transcript) -Erro
 
 Write-Host "Execute Autopilot Prerequitites Check" -ForegroundColor Green
 
-Set-ExecutionPolicy -ExecutionPolicy Bypass -Force
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
 Install-Script -Name Check-AutopilotPrerequisites -Force
 Check-AutopilotPrerequisites
 
