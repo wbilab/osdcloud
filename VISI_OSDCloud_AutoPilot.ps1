@@ -2,6 +2,9 @@
 Set-ItemProperty -Path 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework\v4.0.30319' -Name 'SchUseStrongCrypto' -Type DWord -Value '1'
 Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\.NETFramework\v4.0.30319' -Name 'SchUseStrongCrypto' -Type DWord -Value '1'
 
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Force
+Install-Script -Name Check-AutopilotPrerequisites -Force
+Check-AutopilotPrerequisites
 
 Add-Type -AssemblyName System.Windows.Forms
 $systemDrive = $env:SystemDrive
