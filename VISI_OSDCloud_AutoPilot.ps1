@@ -88,6 +88,7 @@ $Button1.Add_Click({
 $Form.WindowState = "Minimized" # Minimiere das GUI-Fenster
 cd $workingDirectory
 .\Get-WindowsAutoPilotInfo.ps1 -GroupTag InCloud -Online -Assign
+$Form.Close() # Schliesse das Programm
 })
 
 # Erstelle den zweiten Button (quadratisch und groesser)
@@ -100,7 +101,7 @@ $Button2.Add_Click({
 $Form.WindowState = "Minimized" # Minimiere das GUI-Fenster
 cd $workingDirectory
 .\Get-WindowsAutoPilotInfo.ps1 -GroupTag Hybrid -Online -Assign
-
+$Form.Close() # Schliesse das Programm
 })
 
 
@@ -133,8 +134,7 @@ $Button3.Text = "Windows Neinstallation"
 $Button3.Size = New-Object System.Drawing.Size(80, 80)
 $Button3.Location = New-Object System.Drawing.Point(310, 120)
 $Button3.Add_Click({
-    $Form.Close() # Schliesse das Programm
-})
+ })
 
 $precheckText = "Autopilot PreCheck Results:`n`nKeyboardlayout: $Keyboardlayout`nTpm present: $tpmpresent`nTpm ready: $tpmready`nTpm enabled: $tpmenabled`nSerienumber: $biosserialnummer`nAutoPilot Registration: $approfile"
 
