@@ -6,7 +6,6 @@ Add-Type -AssemblyName System.Windows.Forms
 $systemDrive = $env:SystemDrive
 $workingDirectory = Join-Path $systemDrive "OSDCloud\Scripts"
 
-
 $Global:Transcript = "$((Get-Date).ToString('yyyy-MM-dd-HHmmss'))-Check-AutopilotPrerequisites.log"
 Start-Transcript -Path (Join-Path "$workingDirectory\" $Global:Transcript) -ErrorAction Ignore
 
@@ -61,7 +60,7 @@ Save-Script -Name Get-WindowsAutoPilotInfo -Path $workingDirectory -Force
 # Erstelle das Hauptfenster
 $Form = New-Object System.Windows.Forms.Form
 $Form.Text = "VISI AutoPilot Registrierung"
-$Form.Size = New-Object System.Drawing.Size(520, 450)
+$Form.Size = New-Object System.Drawing.Size(500, 450)
 $Form.FormBorderStyle = "FixedDialog"
 $Form.MaximizeBox = $false
 $Form.StartPosition = "CenterScreen"
@@ -156,33 +155,42 @@ $precheck.Height = 120
 $precheck.Location = New-Object Drawing.Point(10, 250)
 $precheck.BorderStyle = [System.Windows.Forms.BorderStyle]::FixedSingle
 
+# Erstellen Sie ein Label für den Countdown-Text
+$LabelClose = New-Object System.Windows.Forms.Label
+$LabelClose.Text = "Das Gerät ist bereits im AutoPilot registriert.`nDas Fenster wird in 15 Sekunden automatisch geschlossen!"
+$LabelClose.AutoSize = $true
+$LabelClose.ForeColor = [System.Drawing.Color]::Green
+$LabelClose.Location = New-Object System.Drawing.Point(10, 380)
+
+
 # Funktion zum Aktivieren/Deaktivieren der Schaltflächen
 if ($approfile -eq "Assigned") {
     $Button1.Enabled = $false
     $Button2.Enabled = $false
     $OKButton.Enabled = $false
     $InputBox.Enabled = $false
-    $Timer = New-Object System.Windows.Forms.Timer
-$Countdown = 5  # Countdown auf 5 Sekunden ändern
-
-$Button3_Click = {
     $Button3.Enabled = $true
-    $Timer.Start()
-}
 
-$Timer_Tick = {
-    $Countdown--
-    $Button3.Text = "Button 3 ($Countdown s)"
+    # Starten Sie den Countdown
+    $CountdownDuration = 15  # Countdown-Dauer in Sekunden
+    $CountdownTimer = [System.Diagnostics.Stopwatch]::StartNew()
 
-    if ($Countdown -le 0) {
-        $Timer.Stop()
-        $Button3.Enabled = $true
-        $Button3.Text = "Button 3"
+    # Funktion zum Aktualisieren des Countdown-Textes
+    function UpdateCountdownText() {
+    $RemainingTime = $CountdownDuration - [math]::Round($CountdownTimer.Elapsed.TotalSeconds)
+    if ($RemainingTime -gt 0) {
+        
+    } else {
+        $Form.Close()
     }
-}
+    }
 
-$Button3.Add_Click($Button3_Click)
-$Timer.add_Tick($Timer_Tick)
+    # Timer erstellen, um den Countdown-Text zu aktualisieren
+    $CountdownUpdateTimer = New-Object System.Windows.Forms.Timer
+    $CountdownUpdateTimer.Interval = 1000  # 1 Sekunde
+    $CountdownUpdateTimer.Add_Tick({ UpdateCountdownText })
+    $CountdownUpdateTimer.Start()
+
 
 } else {
     $Button1.Enabled = $true
@@ -192,7 +200,6 @@ $Timer.add_Tick($Timer_Tick)
     $Button3.Enabled = $true
 }
 
-
 # Füge die Steuerelemente dem Hauptfenster hinzu
 $Form.Controls.Add($LabelTitle)
 $Form.Controls.Add($LogoPictureBox)
@@ -201,6 +208,8 @@ $Form.Controls.Add($LabelTag)
 $Form.Controls.Add($InputBox)
 $Form.Controls.Add($precheck)
 $form.Controls.AddRange(@($Button1, $Button2, $Button3,$OKButton))
+$Form.Controls.Add($LabelClose)
 
 # Zeige das GUI-Fenster an
 $Form.ShowDialog()
+
