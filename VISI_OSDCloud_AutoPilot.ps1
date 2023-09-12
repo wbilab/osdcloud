@@ -130,7 +130,7 @@ cd $workingDirectory
 
 # Erstelle den driten Button (quadratisch und groesser)
 $Button3 = New-Object System.Windows.Forms.Button
-$Button3.Text = "Windows Neinstallation"
+$Button3.Text = "AutoPilot Registrierung`nschliessen"
 $Button3.Size = New-Object System.Drawing.Size(80, 80)
 $Button3.Location = New-Object System.Drawing.Point(310, 120)
 $Button3.Add_Click({
