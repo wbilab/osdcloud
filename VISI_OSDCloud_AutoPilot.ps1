@@ -190,7 +190,8 @@ if ($approfile -eq "Assigned") {
     $CountdownUpdateTimer.Interval = 1000  # 1 Sekunde
     $CountdownUpdateTimer.Add_Tick({ UpdateCountdownText })
     $CountdownUpdateTimer.Start()
-
+    
+    $Form.Controls.Add($LabelClose)
 
 } else {
     $Button1.Enabled = $true
@@ -208,7 +209,6 @@ $Form.Controls.Add($LabelTag)
 $Form.Controls.Add($InputBox)
 $Form.Controls.Add($precheck)
 $form.Controls.AddRange(@($Button1, $Button2, $Button3,$OKButton))
-$Form.Controls.Add($LabelClose)
 
 # Zeige das GUI-Fenster an
 $Form.ShowDialog()
