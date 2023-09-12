@@ -2,8 +2,6 @@
 Set-ItemProperty -Path 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework\v4.0.30319' -Name 'SchUseStrongCrypto' -Type DWord -Value '1'
 Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\.NETFramework\v4.0.30319' -Name 'SchUseStrongCrypto' -Type DWord -Value '1'
 
-# Setze die Zeichencodierung auf UTF-8
-[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 Add-Type -AssemblyName System.Windows.Forms
 $systemDrive = $env:SystemDrive
@@ -11,10 +9,8 @@ $workingDirectory = Join-Path $systemDrive "OSDCloud\Scripts"
 
 
 $rawImageUrl = "https://raw.githubusercontent.com/wbilab/osdcloud/main/Vi_Logo.png"
-Write-Host -ForegroundColor Gray $rawImageUrl
 Invoke-WebRequest $rawImageUrl -OutFile $workingDirectory"\Vi_Logo.png"
 $logo = Join-Path $workingDirectory "Vi_Logo.png"
-Write-Host -ForegroundColor Gray $logo
 
 Save-Script -Name Get-WindowsAutoPilotInfo -Path $workingDirectory -Force
 
@@ -29,7 +25,7 @@ $Form.StartPosition = "CenterScreen"
 
 # Erstelle den Titel mit groesserer Schriftart
 $LabelTitle = New-Object System.Windows.Forms.Label
-$LabelTitle.Text = "Bitte wählen Sie die gewünschte Funktion:"
+$LabelTitle.Text = [System.Text.Encoding]::UTF8.GetString([System.Text.Encoding]::Default.GetBytes("Bitte wählen Sie die gewünschte Funktion:"))
 $LabelTitle.Location = New-Object System.Drawing.Point(10, 70)
 $LabelTitle.AutoSize = $true
 $LabelTitle.Font = New-Object System.Drawing.Font("Arial", 11)
