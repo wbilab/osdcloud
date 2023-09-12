@@ -5,12 +5,8 @@ Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\.NETFramework\v4.0.30319' -Name
 Add-Type -AssemblyName System.Windows.Forms
 $systemDrive = $env:SystemDrive
 
-# Definieren Sie die GitHub-Repository-URL und den Pfad zur Bilddatei im Repository
-$repoUrl = "https://github.com/wbilab/osdcloud"
-$logoPathInRepo = "blob/main/Vi_Logo.png"
 
-# Konstruieren Sie die Raw-URL des Bildes im Repository
-$rawImageUrl = "$repoUrl/raw/master/$logoPathInRepo"
+$rawImageUrl = "https://raw.githubusercontent.com/wbilab/osdcloud/main/Vi_Logo.png"
 Write-Host -ForegroundColor Gray $rawImageUrl
 
 Save-Script -Name Get-WindowsAutoPilotInfo -Path $workingDirectory -Force

@@ -19,7 +19,7 @@ Write-Host -ForegroundColor DarkGray "Executing Keyboard Language Skript"
 Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/AkosBakos/OSDCloud/main/Set-KeyboardLanguage.ps1" -Wait
 
 Write-Host -ForegroundColor DarkGray "Executing VISI Autopilot Registration"
-Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/wbilab/osdcloud/main/VISI_OSDCloud_AutoPilot.ps1" -Wait
+Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/wbilab/osdcloud/18bb1e140567f45ef697bcbe498e0fb8324c32bc/VISI_OSDCloud_AutoPilot.ps1" -Wait
 
 Write-Host -ForegroundColor DarkGray "Executing OOBEDeploy Script fomr OSDCloud Module"
 Start-Process PowerShell -ArgumentList "-NoL -C Start-OOBEDeploy" -Wait
