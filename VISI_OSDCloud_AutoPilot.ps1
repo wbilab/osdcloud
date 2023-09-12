@@ -52,7 +52,7 @@ Write-Host "Keyboardlayout: $Keyboardlayout"
 Write-Host "Tpm present: $tpmpresent "
 Write-Host "Tpm ready: $tpmready"
 Write-Host "DTpm enabled: $tpmenabled"
-Write-Host "Die BIOS Seriennummer ist: $biosserialnummer"
+Write-Host "Serienumber: $biosserialnummer"
 
 
 $rawImageUrl = "https://raw.githubusercontent.com/wbilab/osdcloud/main/Vi_Logo.png"
@@ -141,6 +141,16 @@ $Button3.Add_Click({
     $Form.Close() # Schliesse das Programm
 })
 
+$precheckText = "Keyboardlayout: $Keyboardlayout`nTpm present: $tpmpresent`nTpm ready: $tpmready`nTpm enabled: $tpmenabled`nSerienumber: $biosserialnummer"
+
+# Erstellen Sie ein Label mit Rahmen und dem Text mit 5 Zeilen
+$precheck = New-Object Windows.Forms.Label
+$precheck.Text = $precheckText
+$precheck.Width = 380
+$precheck.Height = 100
+$precheck.Location = New-Object Drawing.Point(10, 310)
+$precheck.BorderStyle = [System.Windows.Forms.BorderStyle]::FixedSingle
+
 # Füge die Steuerelemente dem Hauptfenster hinzu
 $Form.Controls.Add($LabelTitle)
 $Form.Controls.Add($LogoPictureBox)
@@ -150,6 +160,7 @@ $Form.Controls.Add($LabelAnderes)
 $Form.Controls.Add($InputBox)
 $Form.Controls.Add($OKButton)
 $Form.Controls.Add($Button3)
+$Form.Controls.Add($precheck)
 
 # Zeige das GUI-Fenster an
 $Form.ShowDialog()
