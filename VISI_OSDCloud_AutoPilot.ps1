@@ -30,8 +30,7 @@ $tpmenabledZeile = $logInhalt | Where-Object { $_ -match "Tpm enabled" }
 $biosserialnummerZeile = $logInhalt | Where-Object { $_ -match "Bios Serialnumber" }
 $approfileZeile = $logInhalt | Where-Object { $_ -match "Cached AP Profile" }
 
-
-# Teile die Zeile anhand des Doppelpunkts (:) auf, um den Wert zu extrahieren
+# Teile die Zeile anhand des Doppelpunkts (:) auf, um den Werte aus dem Autopilot PreCheck zu extrahieren und definiere Variabeln
 $KeyboardlayoutTeile = $KeyboardlayoutZeile -split ":"
 $Keyboardlayout = $KeyboardlayoutTeile[1].Trim()
 
@@ -49,14 +48,6 @@ $biosserialnummer = $biosserialnummerTeile[1].Trim()
 
 $approfileTeile = $approfileZeile -split ":"
 $approfile = $approfileTeile[1].Trim()
-
-
-# Sie können sie verwenden, wie Sie möchten
-Write-Host "Keyboardlayout: $Keyboardlayout"
-Write-Host "Tpm present: $tpmpresent "
-Write-Host "Tpm ready: $tpmready"
-Write-Host "DTpm enabled: $tpmenabled"
-Write-Host "Serienumber: $biosserialnummer"
 
 
 $rawImageUrl = "https://raw.githubusercontent.com/wbilab/osdcloud/main/Vi_Logo.png"
