@@ -6,6 +6,7 @@ Add-Type -AssemblyName System.Windows.Forms
 $systemDrive = $env:SystemDrive
 $workingDirectory = Join-Path $systemDrive "OSDCloud\Scripts"
 
+
 $Global:Transcript = "$((Get-Date).ToString('yyyy-MM-dd-HHmmss'))-Check-AutopilotPrerequisites.log"
 Start-Transcript -Path (Join-Path "$workingDirectory\" $Global:Transcript) -ErrorAction Ignore
 
@@ -16,6 +17,7 @@ Install-Script -Name Check-AutopilotPrerequisites -Force
 Check-AutopilotPrerequisites
 
 Stop-Transcript
+
 
 # Pfad zur Logdatei
 $logDateiPfad = (Join-Path "$workingDirectory\" $Global:Transcript)
@@ -154,17 +156,51 @@ $precheck.Height = 120
 $precheck.Location = New-Object Drawing.Point(10, 250)
 $precheck.BorderStyle = [System.Windows.Forms.BorderStyle]::FixedSingle
 
+# Funktion zum Aktivieren/Deaktivieren der Schaltflächen
+if ($approfile -eq "Assigned") {
+    $Button1.Enabled = $false
+    $Button2.Enabled = $false
+    $OKButton.Enabled = $false
+    $InputBox.Enabled = $false
+    $Timer = New-Object System.Windows.Forms.Timer
+$Countdown = 5  # Countdown auf 5 Sekunden ändern
+
+$Button3_Click = {
+    $Button3.Enabled = $true
+    $Timer.Start()
+}
+
+$Timer_Tick = {
+    $Countdown--
+    $Button3.Text = "Button 3 ($Countdown s)"
+
+    if ($Countdown -le 0) {
+        $Timer.Stop()
+        $Button3.Enabled = $true
+        $Button3.Text = "Button 3"
+    }
+}
+
+$Button3.Add_Click($Button3_Click)
+$Timer.add_Tick($Timer_Tick)
+
+} else {
+    $Button1.Enabled = $true
+    $Button2.Enabled = $true
+    $OKButton.Enabled = $true
+    $InputBox.Enabled = $true
+    $Button3.Enabled = $true
+}
+
+
 # Füge die Steuerelemente dem Hauptfenster hinzu
 $Form.Controls.Add($LabelTitle)
 $Form.Controls.Add($LogoPictureBox)
-$Form.Controls.Add($Button1)
-$Form.Controls.Add($Button2)
 $Form.Controls.Add($LabelAnderes)
 $Form.Controls.Add($LabelTag)
 $Form.Controls.Add($InputBox)
-$Form.Controls.Add($OKButton)
-$Form.Controls.Add($Button3)
 $Form.Controls.Add($precheck)
+$form.Controls.AddRange(@($Button1, $Button2, $Button3,$OKButton))
 
 # Zeige das GUI-Fenster an
 $Form.ShowDialog()
