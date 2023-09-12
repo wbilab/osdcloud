@@ -17,6 +17,22 @@ Check-AutopilotPrerequisites
 
 Stop-Transcript
 
+# Pfad zur Logdatei
+$logDateiPfad = (Join-Path "$workingDirectory\" $Global:Transcript)
+
+# Lese die Logdatei
+$logInhalt = Get-Content -Path $logDateiPfad
+
+# Durchsuche den Inhalt nach der Zeile mit "Os Serialnumber" und extrahiere den Wert
+$serialnummerZeile = $logInhalt | Where-Object { $_ -match "Os Serialnumber" }
+
+# Teile die Zeile anhand des Doppelpunkts (:) auf, um den Wert zu extrahieren
+$serialnummerTeile = $serialnummerZeile -split ":"
+$serialnummer = $serialnummerTeile[1].Trim()
+
+# Die Seriennummer ist jetzt in der Variable $serialnummer gespeichert
+# Sie können sie verwenden, wie Sie möchten
+Write-Host "Die OS Seriennummer ist: $serialnummer"
 
 $rawImageUrl = "https://raw.githubusercontent.com/wbilab/osdcloud/main/Vi_Logo.png"
 Invoke-WebRequest $rawImageUrl -OutFile $workingDirectory"\Vi_Logo.png"
