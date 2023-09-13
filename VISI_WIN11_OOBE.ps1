@@ -38,7 +38,7 @@ $OSDCloudGUIParam = @'
                                 "de-de",
                                 "fr-fr",
                                 "it-it",
-                                "en-en"
+                                "en-us"
                             ],
     "OSNameValues":  [
                             "Windows 11 22H2 x64",
