@@ -70,63 +70,50 @@ Out-File -FilePath $ScriptPathSendKeys -InputObject $SendKeysScript -Encoding as
 Write-Host -ForegroundColor Gray "Download ServiceUI.exe from GitHub Repo"
 Invoke-WebRequest https://github.com/wbilab/osdcloud/raw/main/ServiceUI64.exe -OutFile "C:\OSDCloud\ServiceUI.exe"
 
-###### Create Scheduled Task for SendKeys with 15 seconds delay ######
-
-# Benutzername und Passwort festlegen
-$benutzername = "tempadmin"
-$passwort = (New-Guid).Guid | ConvertTo-SecureString -AsPlainText -Force
-
-# Überprüfen, ob der Benutzer bereits existiert
-$benutzerExistiert = Get-LocalUser -Name $benutzername -ErrorAction SilentlyContinue
-
-# Wenn der Benutzer nicht vorhanden ist, dann erstellen
-if (!$benutzerExistiert) {
-    $neuerBenutzer = New-LocalUser -Name $benutzername -Password $passwort -FullName "Lokaler Administrator Windows LAPS" -Description "Lokaler Administrator - Windows LAPS"
-
-    # Gruppen-ID für Administratoren
-    $administratorenGruppenID = 544
-
-    # Benutzer zur Administratorengruppe hinzufügen
-    $administratorenGruppe = Get-LocalGroup -SID "S-1-5-32-544"
-    Add-LocalGroupMember -Group $administratorenGruppe -Member $neuerBenutzer
-   
-}
-
-# Aufgabe definieren
+#Create Scheduled Task for SendKeys with 15 seconds delay
 $TaskName = "Scheduled Task for SendKeys"
-$arguments = '-process:RuntimeBroker.exe C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe ' + $ScriptPathSendKeys + ' -NoExit'
-$action = New-ScheduledTaskAction -Execute "C:\OSDCloud\ServiceUI.exe" -Argument $arguments
-$trigger = New-ScheduledTaskTrigger -AtLogon
-$settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
 
-# Verzögerung hinzufügen (15 Sekunden)
+$ShedService = New-Object -comobject 'Schedule.Service'
+$ShedService.Connect()
+
+$Task = $ShedService.NewTask(0)
+$Task.RegistrationInfo.Description = $taskName
+$Task.Settings.Enabled = $true
+$Task.Settings.AllowDemandStart = $true
+
+# https://msdn.microsoft.com/en-us/library/windows/desktop/aa383987(v=vs.85).aspx
+$trigger = $task.triggers.Create(9) # 0 EventTrigger, 1 TimeTrigger, 2 DailyTrigger, 3 WeeklyTrigger, 4 MonthlyTrigger, 5 MonthlyDOWTrigger, 6 IdleTrigger, 7 RegistrationTrigger, 8 BootTrigger, 9 LogonTrigger
 $trigger.Delay = 'PT15S'
+$trigger.Enabled = $true
 
-$passwortText = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($passwort))
+$action = $Task.Actions.Create(0)
+$action.Path = 'C:\OSDCloud\ServiceUI.exe'
+$action.Arguments = '-process:RuntimeBroker.exe C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe ' + $ScriptPathSendKeys + ' -NoExit'
 
-# RegisterTaskDefinition aufrufen, um die Aufgabe zu erstellen
-Register-ScheduledTask -TaskName $TaskName -Trigger $trigger -Action $action -User "$benutzername" -Password "$passwortText" -TaskPath "\" -Settings $settings
+$taskFolder = $ShedService.GetFolder("\")
+# https://msdn.microsoft.com/en-us/library/windows/desktop/aa382577(v=vs.85).aspx
+$taskFolder.RegisterTaskDefinition($TaskName, $Task , 6, "SYSTEM", $NULL, 5)
 
-# Aufgabe aktivieren
-Enable-ScheduledTask -TaskName $TaskName 
-
-###### Create Scheduled Task for OSDCloud post installation with 20 seconds delay#####
+# Create Scheduled Task for OSDCloud post installation with 20 seconds delay
 $TaskName = "Scheduled Task for OSDCloud post installation"
 
-# Aufgabe definieren
-$TaskName = "Scheduled Task for SendKeys"
-$arguments = '-process:RuntimeBroker.exe C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe ' + $ScriptPathOOBE + ' -NoExit'
-$action = New-ScheduledTaskAction -Execute "C:\OSDCloud\ServiceUI.exe" -Argument $arguments
-$trigger = New-ScheduledTaskTrigger -AtLogon
-$settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
+$ShedService = New-Object -comobject 'Schedule.Service'
+$ShedService.Connect()
 
-# Verzögerung hinzufügen (15 Sekunden)
+$Task = $ShedService.NewTask(0)
+$Task.RegistrationInfo.Description = $taskName
+$Task.Settings.Enabled = $true
+$Task.Settings.AllowDemandStart = $true
+
+# https://msdn.microsoft.com/en-us/library/windows/desktop/aa383987(v=vs.85).aspx
+$trigger = $task.triggers.Create(9) # 0 EventTrigger, 1 TimeTrigger, 2 DailyTrigger, 3 WeeklyTrigger, 4 MonthlyTrigger, 5 MonthlyDOWTrigger, 6 IdleTrigger, 7 RegistrationTrigger, 8 BootTrigger, 9 LogonTrigger
 $trigger.Delay = 'PT20S'
+$trigger.Enabled = $true
 
-$passwortText = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($passwort))
+$action = $Task.Actions.Create(0)
+$action.Path = 'C:\OSDCloud\ServiceUI.exe'
+$action.Arguments = '-process:RuntimeBroker.exe C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe ' + $ScriptPathOOBE + ' -NoExit'
 
-# RegisterTaskDefinition aufrufen, um die Aufgabe zu erstellen
-Register-ScheduledTask -TaskName $TaskName -Trigger $trigger -Action $action -User "$benutzername" -Password "$passwortText" -TaskPath "\" -Settings $settings
-
-# Aufgabe aktivieren
-Enable-ScheduledTask -TaskName $TaskName 
+$taskFolder = $ShedService.GetFolder("\")
+# https://msdn.microsoft.com/en-us/library/windows/desktop/aa382577(v=vs.85).aspx
+$taskFolder.RegisterTaskDefinition($TaskName, $Task , 6, "SYSTEM", $NULL, 5)
