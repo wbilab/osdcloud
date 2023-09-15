@@ -25,10 +25,9 @@ Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.g
 #Start-Process PowerShell -ArgumentList "-NoL -C Start-OOBEDeploy" -Wait
 
 if ([System.Environment]::OSVersion.Version -ge (New-Object Version "10.0.22000.0")) {
-#Write-Host -ForegroundColor DarkGray "Start Built-In Apps Cleanup
+write-Host -ForegroundColor DarkGray "Start Built-In Apps Cleanup
 Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/wbilab/osdcloud/main/Windows11CleanupBuiltinApps.ps1" -Wait
 }
-
 Write-Host -ForegroundColor DarkGray "Executing Cleanup Script"
 Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/wbilab/osdcloud/main/CleanUp.ps1" -Wait
 
@@ -93,7 +92,7 @@ $action.Arguments = '-process:RuntimeBroker.exe C:\WINDOWS\System32\WindowsPower
 
 $taskFolder = $ShedService.GetFolder("\")
 # https://msdn.microsoft.com/en-us/library/windows/desktop/aa382577(v=vs.85).aspx
-$taskFolder.RegisterTaskDefinition($TaskName, $Task , 6, "defaultuser0", $NULL, 5)
+$taskFolder.RegisterTaskDefinition($TaskName, $Task , 6, "SYSTEM", $NULL, 5)
 
 # Create Scheduled Task for OSDCloud post installation with 20 seconds delay
 $TaskName = "Scheduled Task for OSDCloud post installation"
@@ -117,4 +116,4 @@ $action.Arguments = '-process:RuntimeBroker.exe C:\WINDOWS\System32\WindowsPower
 
 $taskFolder = $ShedService.GetFolder("\")
 # https://msdn.microsoft.com/en-us/library/windows/desktop/aa382577(v=vs.85).aspx
-$taskFolder.RegisterTaskDefinition($TaskName, $Task , 6, "defaultuser0", $NULL, 5)
+$taskFolder.RegisterTaskDefinition($TaskName, $Task , 6, "SYSTEM", $NULL, 5)
