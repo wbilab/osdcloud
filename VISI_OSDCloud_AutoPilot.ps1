@@ -2,6 +2,20 @@
 Set-ItemProperty -Path 'HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework\v4.0.30319' -Name 'SchUseStrongCrypto' -Type DWord -Value '1'
 Set-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\.NETFramework\v4.0.30319' -Name 'SchUseStrongCrypto' -Type DWord -Value '1'
 
+Add-Type -TypeDefinition @"
+using System;
+using System.Runtime.InteropServices;
+
+public class Win32 {
+    [DllImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static extern bool SetForegroundWindow(IntPtr hWnd);
+
+    [DllImport("user32.dll")]
+    public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+}
+"@
+
 Add-Type -AssemblyName System.Windows.Forms
 $systemDrive = $env:SystemDrive
 $workingDirectory = Join-Path $systemDrive "OSDCloud\Scripts"
@@ -58,6 +72,9 @@ $logo = Join-Path $workingDirectory "Vi_Logo.png"
 Save-Script -Name Get-WindowsAutoPilotInfo -Path $workingDirectory -Force
 
 # Erstelle das Hauptfenster
+
+[void][System.Reflection.Assembly]::LoadWithPartialName('System.Windows.Forms')
+
 $Form = New-Object System.Windows.Forms.Form
 $Form.Text = "VISI AutoPilot Registrierung"
 $Form.Size = New-Object System.Drawing.Size(500, 450)
@@ -211,5 +228,6 @@ $Form.Controls.Add($precheck)
 $form.Controls.AddRange(@($Button1, $Button2, $Button3,$OKButton))
 
 # Zeige das GUI-Fenster an
+[void][Win32]::SetForegroundWindow($form.Handle)
 $Form.ShowDialog()
 
