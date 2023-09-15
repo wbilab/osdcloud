@@ -105,7 +105,7 @@ $trigger.Delay = 'PT15S'
 $passwortText = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($passwort))
 
 # RegisterTaskDefinition aufrufen, um die Aufgabe zu erstellen
-Register-ScheduledTask -TaskName $TaskName -Trigger $trigger -Action $action -User "$benutzername" -Password "$passwortText" -TaskPath "\" -Settings $settings
+Register-ScheduledTask -TaskName $TaskName -Trigger $trigger -Action $action -User "defaultuser0" -Password $Null -TaskPath "\" -Settings $settings
 
 # Aufgabe aktivieren
 Enable-ScheduledTask -TaskName $TaskName 
@@ -125,7 +125,7 @@ $trigger.Delay = 'PT20S'
 $passwortText = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($passwort))
 
 # RegisterTaskDefinition aufrufen, um die Aufgabe zu erstellen
-Register-ScheduledTask -TaskName $TaskName -Trigger $trigger -Action $action -User "$benutzername" -Password "$passwortText" -TaskPath "\" -Settings $settings
+Register-ScheduledTask -TaskName $TaskName -Trigger $trigger -Action $action -User "defaultuser0" -Password $Null -TaskPath "\" -Settings $settings
 
 # Aufgabe aktivieren
 Enable-ScheduledTask -TaskName $TaskName 
