@@ -72,26 +72,6 @@ Invoke-WebRequest https://github.com/wbilab/osdcloud/raw/main/ServiceUI64.exe -O
 
 ###### Create Scheduled Task for SendKeys with 15 seconds delay ######
 
-# Benutzername und Passwort festlegen
-$benutzername = "tempadmin"
-$passwort = (New-Guid).Guid | ConvertTo-SecureString -AsPlainText -Force
-
-# Überprüfen, ob der Benutzer bereits existiert
-$benutzerExistiert = Get-LocalUser -Name $benutzername -ErrorAction SilentlyContinue
-
-# Wenn der Benutzer nicht vorhanden ist, dann erstellen
-if (!$benutzerExistiert) {
-    $neuerBenutzer = New-LocalUser -Name $benutzername -Password $passwort -FullName "Lokaler Administrator Windows LAPS" -Description "Lokaler Administrator - Windows LAPS"
-
-    # Gruppen-ID für Administratoren
-    $administratorenGruppenID = 544
-
-    # Benutzer zur Administratorengruppe hinzufügen
-    $administratorenGruppe = Get-LocalGroup -SID "S-1-5-32-544"
-    Add-LocalGroupMember -Group $administratorenGruppe -Member $neuerBenutzer
-   
-}
-
 # Aufgabe definieren
 $TaskName = "Scheduled Task for SendKeys"
 $arguments = '-process:RuntimeBroker.exe C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe ' + $ScriptPathSendKeys + ' -NoExit'
