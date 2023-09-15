@@ -17,10 +17,6 @@ If (Test-Path -Path 'C:\Temp') {
     Get-ChildItem 'C:\Windows\Temp' -Filter *Events* | Copy-Item -Destination 'C:\ProgramData\Microsoft\IntuneManagementExtension\Logs\OSD' -Force
 }
 
-# Cleanup Task Scheduler
-Unregister-ScheduledTask -TaskName "Scheduled Task for SendKeys" -Confirm:$false
-Unregister-ScheduledTask -TaskName "Scheduled Task for OSDCloud post installation" -Confirm:$false
-
 # Remove TempAdmin
 Remove-LocalUser -Name "tempadmin"
 
