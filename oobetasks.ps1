@@ -114,7 +114,6 @@ Enable-ScheduledTask -TaskName $TaskName
 $TaskName = "Scheduled Task for OSDCloud post installation"
 
 # Aufgabe definieren
-$TaskName = "Scheduled Task for SendKeys"
 $arguments = '-process:RuntimeBroker.exe C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe ' + $ScriptPathOOBE + ' -NoExit'
 $action = New-ScheduledTaskAction -Execute "C:\OSDCloud\ServiceUI.exe" -Argument $arguments
 $trigger = New-ScheduledTaskTrigger -AtLogon
