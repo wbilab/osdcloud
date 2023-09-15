@@ -23,4 +23,10 @@ If (Test-Path -Path 'C:\Drivers') { Remove-Item 'C:\Drivers' -Recurse -Force }
 #If (Test-Path -Path 'C:\Temp') { Remove-Item 'C:\Temp' -Recurse -Force }
 Get-ChildItem 'C:\Windows\Temp' -Filter *membeer*  | Remove-Item -Force
 
+Unregister-ScheduledTask -TaskName "Scheduled Task for SendKeys" -Confirm:$false
+Unregister-ScheduledTask -TaskName "Scheduled Task for OSDCloud post installation" -Confirm:$false
+
+Remove-LocalUser -Name "tempadmin"
+
+
 Stop-Transcript
