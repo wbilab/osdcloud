@@ -227,7 +227,7 @@ $Form.Controls.Add($InputBox)
 $Form.Controls.Add($precheck)
 $form.Controls.AddRange(@($Button1, $Button2, $Button3,$OKButton))
 
-# Zeige das GUI-Fenster an
+# Zeigen Sie das GUI-Fenster an und setzen Sie es in den Vordergrund
 [void][Win32]::SetForegroundWindow($form.Handle)
 $Form.ShowDialog()
 
