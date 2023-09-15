@@ -30,10 +30,7 @@ $OSDCloudGUIParam = @'
                                 "Retail",
                                 "Volume"
                             ],
-    "OSEditionValues":  [
-                            "Enterprise",
-                            "Pro"
-                        ],
+    "OSEditionValues":  "Pro",
     "OSLanguageValues":  [
                                 "de-de",
                                 "fr-fr",
