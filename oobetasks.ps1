@@ -42,7 +42,7 @@ Start-Process PowerShell -ArgumentList "-NoL -C Restart-Computer -Force" -Wait
 Stop-Transcript -Verbose | Out-File
 "@
 
-Out-File -FilePath $ScriptPathOOBE -InputObject $OOBEScript -Encoding ascii
+Out-File -FilePath "C:\Windows\System32\GroupPolicy\User\Scripts\Logon\OOBE.ps1" -InputObject $OOBEScript -Encoding ascii
 
 $SendKeysScript = @"
 `$Global:Transcript = "`$((Get-Date).ToString('yyyy-MM-dd-HHmmss'))-SendKeys.log"
@@ -64,48 +64,4 @@ Write-Host -ForegroundColor DarkGray "SendKeys: SHIFT + F10"
 Stop-Transcript -Verbose | Out-File
 "@
 
-Out-File -FilePath $ScriptPathSendKeys -InputObject $SendKeysScript -Encoding ascii
-
-# Download ServiceUI.exe
-Write-Host -ForegroundColor Gray "Download ServiceUI.exe from GitHub Repo"
-Invoke-WebRequest https://github.com/wbilab/osdcloud/raw/main/ServiceUI64.exe -OutFile "C:\OSDCloud\ServiceUI.exe"
-
-###### Create Scheduled Task for SendKeys with 15 seconds delay ######
-
-# Aufgabe definieren
-$TaskName = "Scheduled Task for SendKeys"
-$arguments = '-process:RuntimeBroker.exe C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe ' + $ScriptPathSendKeys + ' -NoExit'
-$action = New-ScheduledTaskAction -Execute "C:\OSDCloud\ServiceUI.exe" -Argument $arguments
-$trigger = New-ScheduledTaskTrigger -AtLogon
-$settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
-
-# Verzögerung hinzufügen (15 Sekunden)
-$trigger.Delay = 'PT15S'
-
-$passwortText = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($passwort))
-
-# RegisterTaskDefinition aufrufen, um die Aufgabe zu erstellen
-Register-ScheduledTask -TaskName $TaskName -Trigger $trigger -Action $action -User "defaultuser0" -Password $Null -TaskPath "\" -Settings $settings
-
-# Aufgabe aktivieren
-Enable-ScheduledTask -TaskName $TaskName 
-
-###### Create Scheduled Task for OSDCloud post installation with 20 seconds delay#####
-$TaskName = "Scheduled Task for OSDCloud post installation"
-
-# Aufgabe definieren
-$arguments = '-process:RuntimeBroker.exe C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe ' + $ScriptPathOOBE + ' -NoExit'
-$action = New-ScheduledTaskAction -Execute "C:\OSDCloud\ServiceUI.exe" -Argument $arguments
-$trigger = New-ScheduledTaskTrigger -AtLogon
-$settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
-
-# Verzögerung hinzufügen (15 Sekunden)
-$trigger.Delay = 'PT20S'
-
-$passwortText = [System.Runtime.InteropServices.Marshal]::PtrToStringAuto([System.Runtime.InteropServices.Marshal]::SecureStringToBSTR($passwort))
-
-# RegisterTaskDefinition aufrufen, um die Aufgabe zu erstellen
-Register-ScheduledTask -TaskName $TaskName -Trigger $trigger -Action $action -User "defaultuser0" -Password $Null -TaskPath "\" -Settings $settings
-
-# Aufgabe aktivieren
-Enable-ScheduledTask -TaskName $TaskName 
+Out-File -FilePath "C:\Windows\System32\GroupPolicy\User\Scripts\Logon\SendKeys.ps1" -InputObject $SendKeysScript -Encoding ascii
