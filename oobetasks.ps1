@@ -6,6 +6,8 @@ $ScriptPathSendKeys = $(Join-Path -Path $logonpfad -ChildPath "SendKeys.ps1")
 # Überprüfe, ob der Ordner existiert. Wenn nicht, erstelle ihn.
 if (-not (Test-Path -Path (Split-Path -Path $psscriptsiniPfad))) {
     New-Item -Path $logonpfad -ItemType Directory -Force | Out-Null
+    New-Item -Path "$env:SystemDrive\WINDOWS\System32\GroupPolicy\User\Scripts\Logoff" -ItemType Directory -Force | Out-Null
+    New-Item -Path "$env:SystemDrive\WINDOWS\System32\GroupPolicy\Machine" -ItemType Directory -Force | Out-Null    
 }
 
 $OOBEScript =@"
@@ -66,7 +68,6 @@ Stop-Transcript -Verbose | Out-File
 
 Out-File -FilePath $ScriptPathSendKeys -InputObject $SendKeysScript -Encoding ascii
 
-
 $psscriptsini = @"
 `
 [Logon]
@@ -77,5 +78,12 @@ $psscriptsini = @"
 "@
 
 Out-File -FilePath "C:\WINDOWS\System32\GroupPolicy\User\Scripts\psscripts.ini" -InputObject $psscriptsini -Encoding ascii -Force
+
+$gpt = @"
+`[General]
+"@
+
+Out-File -FilePath "C:\WINDOWS\System32\GroupPolicy\gpt.ini" -InputObject $gpt -Encoding ascii -Force
+
 Set-ItemProperty -Path "C:\WINDOWS\System32\GroupPolicy" -Name Attributes -Value ([System.IO.FileAttributes]::Hidden)
 Set-ItemProperty -Path "C:\WINDOWS\System32\GroupPolicy\User\Scripts\psscripts.ini" -Name Attributes -Value ([System.IO.FileAttributes]::Hidden)
