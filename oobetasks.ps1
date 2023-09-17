@@ -74,5 +74,13 @@ $psscriptsini = @"
 1Parameters=
 "@
 
-Out-File -FilePath "C:\WINDOWS\System32\GroupPolicy\User\Scripts\psscripts.ini" -InputObject $psscriptsini -Encoding ascii
+$psscriptsiniPfad = "C:\WINDOWS\System32\GroupPolicy\User\Scripts"
+
+# Überprüfe, ob der Ordner existiert. Wenn nicht, erstelle ihn.
+if (-not (Test-Path -Path (Split-Path -Path $psscriptsiniPfad))) {
+    New-Item -Path $psscriptsiniPfad -ItemType Directory -Force | Out-Null
+}
+
+
+Out-File -FilePath "C:\WINDOWS\System32\GroupPolicy\User\Scripts\psscripts.ini" -InputObject $psscriptsini -Encoding ascii -Force
 Set-ItemProperty -Path "C:\WINDOWS\System32\GroupPolicy\User\Scripts\psscripts.ini" -Name Attributes -Value ([System.IO.FileAttributes]::Hidden)
