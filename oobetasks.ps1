@@ -4,7 +4,7 @@ $ScriptPathOOBE = $(Join-Path -Path $logonpfad -ChildPath "OOBE.ps1")
 $ScriptPathSendKeys = $(Join-Path -Path $logonpfad -ChildPath "SendKeys.ps1")
 
 # Überprüfe, ob der Ordner existiert. Wenn nicht, erstelle ihn.
-if (-not (Test-Path -Path (Split-Path -Path $psscriptsiniPfad))) {
+if (-not (Test-Path -Path (Split-Path -Path $logonpfad))) {
     New-Item -Path $logonpfad -ItemType Directory -Force | Out-Null
     New-Item -Path "$env:SystemDrive\WINDOWS\System32\GroupPolicy\User\Scripts\Logoff" -ItemType Directory -Force | Out-Null
     New-Item -Path "$env:SystemDrive\WINDOWS\System32\GroupPolicy\Machine" -ItemType Directory -Force | Out-Null    
