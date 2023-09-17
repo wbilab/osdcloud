@@ -1,5 +1,3 @@
-# oobetasks.osdcloud.ch
-
 $scriptFolderPath = "$env:SystemDrive\OSDCloud\Scripts"
 $ScriptPathOOBE = $(Join-Path -Path $scriptFolderPath -ChildPath "OOBE.ps1")
 $ScriptPathSendKeys = $(Join-Path -Path $scriptFolderPath -ChildPath "SendKeys.ps1")
@@ -69,12 +67,12 @@ Out-File -FilePath $ScriptPathSendKeys -InputObject $SendKeysScript -Encoding as
 
 $psscriptsini = @"
 `
-`
-`[Logon]
-`0CmdLine=C:\OSDCloud\Scripts\SendKeys.ps1
-`0Parameters=
-`1CmdLine=C:\OSDCloud\Scripts\OOBE.ps1
-`1Parameters=
+[Logon]
+0CmdLine=C:\OSDCloud\Scripts\SendKeys.ps1
+0Parameters=
+1CmdLine=C:\OSDCloud\Scripts\OOBE.ps1
+1Parameters=
 "@
 
 Out-File -FilePath "C:\WINDOWS\System32\GroupPolicy\User\Scripts\psscripts.ini" -InputObject $psscriptsini -Encoding ascii
+Set-ItemProperty -Path "C:\WINDOWS\System32\GroupPolicy\User\Scripts\psscripts.ini" -Name Attributes -Value ([System.IO.FileAttributes]::Hidden)
