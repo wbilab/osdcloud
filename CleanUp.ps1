@@ -19,7 +19,9 @@ If (Test-Path -Path 'C:\Temp') {
 
 # Cleanup directories
 If (Test-Path -Path 'C:\OSDCloud') { Remove-Item -Path 'C:\OSDCloud' -Recurse -Force }
-If (Test-Path -Path 'C:\WINDOWS\System32\GroupPolicy\User\Scripts\Logon') { Remove-Item 'C:\WINDOWS\System32\GroupPolicy\User\Scripts\Logon' -Recurse -Force }
+If (Test-Path -Path 'C:\WINDOWS\System32\GroupPolicy\User') { Remove-Item 'C:\WINDOWS\System32\GroupPolicy\User' -Recurse -Force }
+If (Test-Path -Path 'C:\WINDOWS\System32\GroupPolicy\Machine') { Remove-Item 'C:\WINDOWS\System32\GroupPolicy\Machine' -Recurse -Force }
+If (Test-Path -Path 'C:\WINDOWS\System32\GroupPolicy\gpt.ini') { Remove-Item 'C:\WINDOWS\System32\GroupPolicy\gpt.ini' -Recurse -Force }
 If (Test-Path -Path 'C:\Drivers') { Remove-Item 'C:\Drivers' -Recurse -Force }
 #If (Test-Path -Path 'C:\Temp') { Remove-Item 'C:\Temp' -Recurse -Force }
 Get-ChildItem 'C:\Windows\Temp' -Filter *membeer*  | Remove-Item -Force
