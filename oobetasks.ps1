@@ -42,7 +42,7 @@ Start-Process PowerShell -ArgumentList "-NoL -C Restart-Computer -Force" -Wait
 Stop-Transcript -Verbose | Out-File
 "@
 
-Out-File -FilePath "C:\Windows\System32\GroupPolicy\User\Scripts\Logon\OOBE.ps1" -InputObject $OOBEScript -Encoding ascii
+Out-File -FilePath $ScriptPathOOBE -InputObject $OOBEScript -Encoding ascii
 
 $SendKeysScript = @"
 `$Global:Transcript = "`$((Get-Date).ToString('yyyy-MM-dd-HHmmss'))-SendKeys.log"
@@ -64,4 +64,17 @@ Write-Host -ForegroundColor DarkGray "SendKeys: SHIFT + F10"
 Stop-Transcript -Verbose | Out-File
 "@
 
-Out-File -FilePath "C:\Windows\System32\GroupPolicy\User\Scripts\Logon\SendKeys.ps1" -InputObject $SendKeysScript -Encoding ascii
+Out-File -FilePath $ScriptPathSendKeys -InputObject $SendKeysScript -Encoding ascii
+
+
+$psscriptsini = @"
+`
+`
+`[Logon]
+`0CmdLine=C:\OSDCloud\Scripts\SendKeys.ps1
+`0Parameters=
+`1CmdLine=C:\OSDCloud\Scripts\OOBE.ps1
+`1Parameters=
+"@
+
+Out-File -FilePath "C:\WINDOWS\System32\GroupPolicy\User\Scripts\psscripts.ini" -InputObject $psscriptsini -Encoding ascii
