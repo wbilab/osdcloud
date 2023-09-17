@@ -17,9 +17,6 @@ If (Test-Path -Path 'C:\Temp') {
     Get-ChildItem 'C:\Windows\Temp' -Filter *Events* | Copy-Item -Destination 'C:\ProgramData\Microsoft\IntuneManagementExtension\Logs\OSD' -Force
 }
 
-# Remove TempAdmin
-Remove-LocalUser -Name "tempadmin"
-
 # Cleanup directories
 If (Test-Path -Path 'C:\OSDCloud') { Remove-Item -Path 'C:\OSDCloud' -Recurse -Force }
 If (Test-Path -Path 'C:\WINDOWS\System32\GroupPolicy') { Remove-Item 'C:\WINDOWS\System32\GroupPolicy' -Recurse -Force }
