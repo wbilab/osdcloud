@@ -22,6 +22,7 @@ Remove-LocalUser -Name "tempadmin"
 
 # Cleanup directories
 If (Test-Path -Path 'C:\OSDCloud') { Remove-Item -Path 'C:\OSDCloud' -Recurse -Force }
+If (Test-Path -Path 'C:\WINDOWS\System32\GroupPolicy') { Remove-Item 'C:\WINDOWS\System32\GroupPolicy' -Recurse -Force }
 If (Test-Path -Path 'C:\Drivers') { Remove-Item 'C:\Drivers' -Recurse -Force }
 #If (Test-Path -Path 'C:\Temp') { Remove-Item 'C:\Temp' -Recurse -Force }
 Get-ChildItem 'C:\Windows\Temp' -Filter *membeer*  | Remove-Item -Force
