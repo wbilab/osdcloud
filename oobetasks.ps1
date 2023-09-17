@@ -1,9 +1,11 @@
-$scriptFolderPath = "$env:SystemDrive\OSDCloud\Scripts"
-$ScriptPathOOBE = $(Join-Path -Path $scriptFolderPath -ChildPath "OOBE.ps1")
-$ScriptPathSendKeys = $(Join-Path -Path $scriptFolderPath -ChildPath "SendKeys.ps1")
+$logonpfad = "$env:SystemDrive\WINDOWS\System32\GroupPolicy\User\Scripts\Logon"
 
-If(!(Test-Path -Path $scriptFolderPath)) {
-    New-Item -Path $scriptFolderPath -ItemType Directory -Force | Out-Null
+$ScriptPathOOBE = $(Join-Path -Path $logonpfad -ChildPath "OOBE.ps1")
+$ScriptPathSendKeys = $(Join-Path -Path $logonpfad -ChildPath "SendKeys.ps1")
+
+# Überprüfe, ob der Ordner existiert. Wenn nicht, erstelle ihn.
+if (-not (Test-Path -Path (Split-Path -Path $psscriptsiniPfad))) {
+    New-Item -Path $logonpfad -ItemType Directory -Force | Out-Null
 }
 
 $OOBEScript =@"
@@ -68,18 +70,11 @@ Out-File -FilePath $ScriptPathSendKeys -InputObject $SendKeysScript -Encoding as
 $psscriptsini = @"
 `
 [Logon]
-0CmdLine=C:\OSDCloud\Scripts\SendKeys.ps1
+0CmdLine=SendKeys.ps1
 0Parameters=
-1CmdLine=C:\OSDCloud\Scripts\OOBE.ps1
+1CmdLine=OOBE.ps1
 1Parameters=
 "@
-
-$psscriptsiniPfad = "C:\WINDOWS\System32\GroupPolicy\User\Scripts"
-
-# Überprüfe, ob der Ordner existiert. Wenn nicht, erstelle ihn.
-if (-not (Test-Path -Path (Split-Path -Path $psscriptsiniPfad))) {
-    New-Item -Path $psscriptsiniPfad -ItemType Directory -Force | Out-Null
-}
 
 Out-File -FilePath "C:\WINDOWS\System32\GroupPolicy\User\Scripts\psscripts.ini" -InputObject $psscriptsini -Encoding ascii -Force
 Set-ItemProperty -Path "C:\WINDOWS\System32\GroupPolicy" -Name Attributes -Value ([System.IO.FileAttributes]::Hidden)
