@@ -71,20 +71,7 @@ Start-OSDCloudGUI
 Write-Host -ForegroundColor Green "Create C:\Windows\Setup\Scripts\SetupComplete.cmd"
 $SetupCompleteCMD = @'
 powershell.exe -Command Set-ExecutionPolicy RemoteSigned -Force
-@echo off
-setlocal
-
-for /f "tokens=4" %%i in ("ver") do (
-    if "%%i" == "10.0." (
-powershell.exe -Command "& {IEX (IRM https://raw.githubusercontent.com/wbilab/osdcloud/main/oobetasks-Win10.ps1)}"
-    ) else if "%%i" == "10.0.22000" (
-powershell.exe -Command "& {IEX (IRM https://raw.githubusercontent.com/wbilab/osdcloud/main/oobetasks-Win11.ps1)}"
-    ) else (
-        echo Das Betriebssystem ist nicht Windows 10 oder Windows 11.
-    )
-)
-endlocal
-exit /b 0
+powershell.exe -Command "& {IEX (IRM https://raw.githubusercontent.com/wbilab/osdcloud/main/oobetasks.ps1)}"
 '@
 $SetupCompleteCMD | Out-File -FilePath 'C:\Windows\Setup\Scripts\SetupComplete.cmd' -Encoding ascii -Force
 
