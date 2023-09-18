@@ -28,11 +28,6 @@ Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.g
 #Write-Host -ForegroundColor DarkGray "Executing OOBEDeploy Script fomr OSDCloud Module"
 #Start-Process PowerShell -ArgumentList "-NoL -C Start-OOBEDeploy" -Wait
 
-if ([System.Environment]::OSVersion.Version -ge (New-Object Version "10.0.22000.0")) {
-write-Host -ForegroundColor DarkGray "Start Built-In Apps Cleanup"
-Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/wbilab/osdcloud/main/Windows11CleanupBuiltinApps.ps1" -Wait
-}
-
 Write-Host -ForegroundColor DarkGray "Executing Cleanup Script"
 Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/wbilab/osdcloud/main/CleanUp.ps1" -Wait
 
