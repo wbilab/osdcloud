@@ -74,7 +74,7 @@ powershell.exe -Command Set-ExecutionPolicy RemoteSigned -Force
 @echo off
 setlocal
 
-for /f "tokens=4" %%i in ('ver') do (
+for /f "tokens=4" %%i in ("ver") do (
     if "%%i" == "10.0." (
 powershell.exe -Command "& {IEX (IRM https://raw.githubusercontent.com/wbilab/osdcloud/main/oobetasks-Win10.ps1)}"
     ) else if "%%i" == "10.0.22000" (
