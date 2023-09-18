@@ -1,4 +1,4 @@
-# oobetasks.osdcloud.ch
+# Windows 11
 
 $scriptFolderPath = "$env:SystemDrive\OSDCloud\Scripts"
 $ScriptPathOOBE = $(Join-Path -Path $scriptFolderPath -ChildPath "OOBE.ps1")

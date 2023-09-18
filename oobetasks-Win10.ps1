@@ -1,3 +1,5 @@
+# Windows 10
+
 $logonpfad = "$env:SystemDrive\WINDOWS\System32\GroupPolicy\User\Scripts\Logon"
 
 $ScriptPathOOBE = $(Join-Path -Path $logonpfad -ChildPath "OOBE.ps1")
