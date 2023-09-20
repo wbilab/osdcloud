@@ -205,3 +205,5 @@ Set-ItemProperty -Path "C:\WINDOWS\System32\GroupPolicy" -Name Attributes -Value
 Set-ItemProperty -Path "C:\WINDOWS\System32\GroupPolicy\User\Scripts\psscripts.ini" -Name Attributes -Value ([System.IO.FileAttributes]::Hidden)
 
 }
+
+Restart-Computer -Force
