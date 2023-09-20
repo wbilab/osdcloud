@@ -64,9 +64,9 @@ Out-File -FilePath $ScriptPathSendKeys -InputObject $SendKeysScript -Encoding as
 $psscriptsini = @"
 `
 [Logon]
-0CmdLine=SendKeys.ps1
+0CmdLine=OOBE.ps1
 0Parameters=
-1CmdLine=OOBE.ps1
+1CmdLine=SendKeys.ps1
 1Parameters=
 "@
 
