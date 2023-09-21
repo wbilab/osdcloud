@@ -69,6 +69,11 @@ Start-Transcript -Path (Join-Path "`$env:ProgramData\Microsoft\IntuneManagementE
 Write-Host -ForegroundColor DarkGray "Installing OSD PS Module"
 Start-Process PowerShell -ArgumentList "-NoL -C Install-Module OSD -Force -Verbose" -Wait
 
+if ([System.Environment]::OSVersion.Version -ge (New-Object Version "10.0.22000.0")) {
+write-Host -ForegroundColor DarkGray "Start Built-In Apps Cleanup"
+Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/wbilab/osdcloud/main/Windows11CleanupBuiltinApps.ps1" -Wait
+}
+
 Write-Host -ForegroundColor DarkGray "Executing Keyboard Language Skript"
 Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/wbilab/osdcloud/main/Set-KeyboardLanguage.ps1" -Wait
 
