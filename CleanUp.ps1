@@ -27,9 +27,4 @@ If (Test-Path -Path 'C:\Drivers') { Remove-Item 'C:\Drivers' -Recurse -Force }
 #If (Test-Path -Path 'C:\Temp') { Remove-Item 'C:\Temp' -Recurse -Force }
 Get-ChildItem 'C:\Windows\Temp' -Filter *membeer*  | Remove-Item -Force
 
-# Cleanup scheduled Tasks
-Write-Host -ForegroundColor DarkGray "Unregistering Scheduled Tasks"
-Unregister-ScheduledTask -TaskName "Scheduled Task for SendKeys" -Confirm:`$false
-Unregister-ScheduledTask -TaskName "Scheduled Task for OSDCloud post installation" -Confirm:`$false
-
 Stop-Transcript
