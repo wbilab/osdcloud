@@ -50,7 +50,7 @@ $SendKeysScript = @"
 `$downloadPath = 'C:\OSDCloud\nircmd.zip'
 `
 # Zielverzeichnis fuer die extrahierten Dateien
-`$extractPath = 'C:\Temp\nircmd'
+`$extractPath = 'C:\OSDCloud\nircmd'
 
 # Laden Sie nircmd herunter
 `Invoke-WebRequest -Uri $nircmdUrl -OutFile $downloadPath
