@@ -19,6 +19,7 @@ If (Test-Path -Path 'C:\Temp') {
 
 # Cleanup directories
 If (Test-Path -Path 'C:\OSDCloud') { Remove-Item -Path 'C:\OSDCloud' -Recurse -Force }
+If (Test-Path -Path 'C:\OSDCloud\nircmd.zip') { Remove-Item -Path 'C:\OSDCloud\nircmd.zip' -Recurse -Force }
 If (Test-Path -Path 'C:\WINDOWS\System32\GroupPolicy\Machine') { Remove-Item 'C:\WINDOWS\System32\GroupPolicy\Machine' -Recurse -Force }
 If (Test-Path -Path 'C:\WINDOWS\System32\GroupPolicy\gpt.ini') { Remove-Item 'C:\WINDOWS\System32\GroupPolicy\gpt.ini' -Recurse -Force }
 If (Test-Path -Path 'C:\WINDOWS\System32\GroupPolicy\User\Scripts\psscripts.ini') { Remove-Item 'C:\WINDOWS\System32\GroupPolicy\User\Scripts\psscripts.ini' -Recurse -Force }
