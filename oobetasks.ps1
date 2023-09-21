@@ -1,5 +1,3 @@
-# Windows 10
-
 $logonpfad = "$env:SystemDrive\WINDOWS\System32\GroupPolicy\User\Scripts\Logon"
 
 $ScriptPathSendKeys = $(Join-Path -Path $logonpfad -ChildPath "1-SendKeys.ps1")
