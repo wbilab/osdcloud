@@ -45,20 +45,36 @@ Stop-Transcript -Verbose | Out-File
 Out-File -FilePath $ScriptPathOOBE -InputObject $OOBEScript -Encoding ascii
 
 $SendKeysScript = @"
-Write-Host -ForegroundColor DarkGray "Stop Debug-Mode (SHIFT + F10) with WscriptShell.SendKeys"
-`$WscriptShell = New-Object -com Wscript.Shell
+`# Laden der Windows-API-Bibliothek
+Add-Type -TypeDefinition @'
+    using System;
+    using System.Runtime.InteropServices;
 
-# ALT + TAB
-Write-Host -ForegroundColor DarkGray "SendKeys: ALT + TAB"
-`$WscriptShell.SendKeys("%({TAB})")
+    public class KeyboardSimulator {
+        [DllImport('user32.dll')]
+        public static extern void keybd_event(byte bVk, byte bScan, uint dwFlags, UIntPtr dwExtraInfo);
 
-Start-Sleep -Seconds 1
+        public const int KEYEVENTF_KEYDOWN = 0x0001; // Key down flag
+        public const int KEYEVENTF_KEYUP = 0x0002; // Key up flag
 
-# Shift + F10
-Write-Host -ForegroundColor DarkGray "SendKeys: SHIFT + F10"
-`$WscriptShell.SendKeys("+({F10})")
+        public static void SendKey(byte keyCode, int duration) {
+            keybd_event(keyCode, 0, KEYEVENTF_KEYDOWN, UIntPtr.Zero);
+            System.Threading.Thread.Sleep(duration);
+            keybd_event(keyCode, 0, KEYEVENTF_KEYUP, UIntPtr.Zero);
+        }
+    }
+'@
 
-exit
+# Simulieren von "Shift+F10"
+[KeyboardSimulator]::SendKey(0x2A, 100) # Shift-Taste drücken (0x2A ist der Code für die Shift-Taste)
+[KeyboardSimulator]::SendKey(0x7D, 100) # F10-Taste drücken (0x7D ist der Code für die F10-Taste)
+
+# Warten 5 Sekunden
+Start-Sleep -Seconds 5
+
+# Simulieren von "ALT+TAB"
+[KeyboardSimulator]::SendKey(0x12, 100) # Alt-Taste (0x12 ist der Code für die Alt-Taste)
+[KeyboardSimulator]::SendKey(0x09, 100) # TAB-Taste (0x09 ist der Code für die TAB-Taste)
 "@
 
 Out-File -FilePath $ScriptPathSendKeys -InputObject $SendKeysScript -Encoding ascii
