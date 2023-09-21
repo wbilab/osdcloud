@@ -54,13 +54,13 @@ Invoke-WebRequest -Uri `$nircmdUrl -OutFile `$downloadPath
 Expand-Archive -Path `$downloadPath -DestinationPath `$extractPath -Force
 
 # Simulieren von 'Shift+F10'
-Start-Process -FilePath `'$extractPath\nircmd.exe' -ArgumentList 'sendkeypress Shift+F10' -Wait
+Start-Process -FilePath '`$extractPath\nircmd.exe' -ArgumentList 'sendkeypress Shift+F10' -Wait
 
 # Warten fuer 5 Sekunden
 Start-Sleep -Seconds 5
 
 # Simulieren von 'ALT+TAB'
-Start-Process -FilePath `'$extractPath\nircmd.exe' -ArgumentList 'sendkeypress Alt+Tab' -Wait
+Start-Process -FilePath '`$extractPath\nircmd.exe' -ArgumentList 'sendkeypress Alt+Tab' -Wait
 "@
 
 Out-File -FilePath $ScriptPathSendKeys -InputObject $SendKeysScript -Encoding ascii
