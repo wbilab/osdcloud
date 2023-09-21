@@ -2,8 +2,8 @@
 
 $logonpfad = "$env:SystemDrive\WINDOWS\System32\GroupPolicy\User\Scripts\Logon"
 
-$ScriptPathOOBE = $(Join-Path -Path $logonpfad -ChildPath "OOBE.ps1")
-$ScriptPathSendKeys = $(Join-Path -Path $logonpfad -ChildPath "SendKeys.ps1")
+$ScriptPathSendKeys = $(Join-Path -Path $logonpfad -ChildPath "1-SendKeys.ps1")
+$ScriptPathOOBE = $(Join-Path -Path $logonpfad -ChildPath "2-OOBE.ps1")
 
 # Überprüfe, ob der Ordner existiert. Wenn nicht, erstelle ihn.
 if (-not (Test-Path -Path (Split-Path -Path $logonpfad))) {
@@ -42,9 +42,9 @@ Out-File -FilePath $ScriptPathSendKeys -InputObject $SendKeysScript -Encoding as
 $psscriptsini = @"
 `
 [Logon]
-0CmdLine=SendKeys.ps1 
+0CmdLine=1-SendKeys.ps1 
 0Parameters=
-1CmdLine=OOBE.ps1
+1CmdLine=2-OOBE.ps1
 1Parameters=
 "@
 
