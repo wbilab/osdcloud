@@ -53,7 +53,7 @@ $OSDCloudGUIParam = @'
                             "Windows 10"
                         ],
     "ClearDiskConfirm":  false,
-    "restartComputer":  true,
+    "restartComputer":  false,
     "updateDiskDrivers":  true,
     "updateFirmware":  true,
     "updateNetworkDrivers":  true,
