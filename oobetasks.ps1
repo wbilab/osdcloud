@@ -53,19 +53,19 @@ $SendKeysScript = @"
 `$extractPath = 'C:\OSDCloud\nircmd'
 
 # Laden Sie nircmd herunter
-`Invoke-WebRequest -Uri $nircmdUrl -OutFile $downloadPath
+Invoke-WebRequest -Uri `$nircmdUrl -OutFile `$downloadPath
 
 # Entpacken Sie das ZIP-Archiv
-`Expand-Archive -Path $downloadPath -DestinationPath $extractPath -Force
+Expand-Archive -Path `$downloadPath -DestinationPath `$extractPath -Force
 
 # Simulieren von 'Shift+F10'
-`Start-Process -FilePath '$extractPath\nircmd.exe' -ArgumentList 'sendkeypress Shift+F10' -Wait
+Start-Process -FilePath '$extractPath\nircmd.exe' -ArgumentList 'sendkeypress Shift+F10' -Wait
 
 # Warten fuer 5 Sekunden
-`Start-Sleep -Seconds 5
+Start-Sleep -Seconds 5
 
 # Simulieren von 'ALT+TAB'
-`Start-Process -FilePath '$extractPath\nircmd.exe' -ArgumentList 'sendkeypress Alt+Tab' -Wait
+Start-Process -FilePath '$extractPath\nircmd.exe' -ArgumentList 'sendkeypress Alt+Tab' -Wait
 "@
 
 Out-File -FilePath $ScriptPathSendKeys -InputObject $SendKeysScript -Encoding ascii
@@ -73,7 +73,7 @@ Out-File -FilePath $ScriptPathSendKeys -InputObject $SendKeysScript -Encoding as
 $psscriptsini = @"
 `
 [Logon]
-0CmdLine=SendKeys.ps1
+0CmdLine=SendKeys.ps1 
 0Parameters=
 1CmdLine=OOBE.ps1
 1Parameters=
