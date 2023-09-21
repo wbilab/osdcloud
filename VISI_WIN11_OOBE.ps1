@@ -57,9 +57,9 @@ $OSDCloudGUIParam = @'
     "updateDiskDrivers":  true,
     "updateFirmware":  true,
     "updateNetworkDrivers":  true,
-    "SkipAutopilot":  false,
-    "SkitAutopilotOOBE":  false,
-    "SkipOOBEDeploy":  false
+    "SkipAutopilot":  true,
+    "SkitAutopilotOOBE":  true,
+    "SkipOOBEDeploy":  true
 }
 '@
 If (!(Test-Path "X:\OSDCloud\Automate")) {
