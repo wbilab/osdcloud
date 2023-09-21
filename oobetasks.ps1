@@ -46,26 +46,26 @@ Out-File -FilePath $ScriptPathOOBE -InputObject $OOBEScript -Encoding ascii
 
 $SendKeysScript = @"
 `# Definieren Sie den Download-URL fuer nircmd und den Zielpfad zum Speichern
-$nircmdUrl = 'http://www.nirsoft.net/utils/nircmd-x64.zip'
-$downloadPath = 'C:\Temp\nircmd.zip'
-
+`$nircmdUrl = 'https://www.nirsoft.net/utils/nircmd-x64.zip'
+`$downloadPath = 'C:\OSDCloud\nircmd.zip'
+`
 # Zielverzeichnis fuer die extrahierten Dateien
-$extractPath = 'C:\Temp\nircmd'
+`$extractPath = 'C:\Temp\nircmd'
 
 # Laden Sie nircmd herunter
-Invoke-WebRequest -Uri $nircmdUrl -OutFile $downloadPath
+`Invoke-WebRequest -Uri $nircmdUrl -OutFile $downloadPath
 
 # Entpacken Sie das ZIP-Archiv
-Expand-Archive -Path $downloadPath -DestinationPath $extractPath -Force
+`Expand-Archive -Path $downloadPath -DestinationPath $extractPath -Force
 
 # Simulieren von 'Shift+F10'
-Start-Process -FilePath '$extractPath\nircmd.exe' -ArgumentList 'sendkeypress Shift+F10' -Wait
+`Start-Process -FilePath '$extractPath\nircmd.exe' -ArgumentList 'sendkeypress Shift+F10' -Wait
 
 # Warten fuer 5 Sekunden
-Start-Sleep -Seconds 5
+`Start-Sleep -Seconds 5
 
 # Simulieren von 'ALT+TAB'
-Start-Process -FilePath '$extractPath\nircmd.exe' -ArgumentList 'sendkeypress Alt+Tab' -Wait
+`Start-Process -FilePath '$extractPath\nircmd.exe' -ArgumentList 'sendkeypress Alt+Tab' -Wait
 "@
 
 Out-File -FilePath $ScriptPathSendKeys -InputObject $SendKeysScript -Encoding ascii
