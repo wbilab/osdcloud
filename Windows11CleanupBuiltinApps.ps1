@@ -62,7 +62,10 @@ Write-Log $SubBreakingLine
 
 
 $builtinappstoremove = @(
-"Microsoft.windowscommunicationsapps"
+"Clipchamp.Clipchamp"
+"Microsoft.BingNews"
+"Microsoft.BingWeather"
+"Microsoft.GamingApp"
 "Microsoft.SkypeApp"
 "Microsoft.XboxSpeechToTextOverlay"
 "Microsoft.XboxGamingOverlay"
@@ -85,6 +88,7 @@ $builtinappstoremove = @(
 "Microsoft.WindowsMaps"
 "Microsoft.Print3D"
 "MicrosoftTeams"
+"Microsoft.PowerAutomateDesktop"
 "Microsoft.Xbox.TCUI"
 "Microsoft.XboxIdentityProvider"
 )
