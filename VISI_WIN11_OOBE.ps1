@@ -67,7 +67,7 @@ $OSDCloudGUIParam = @'
     "SkipOOBEDeploy":  true,
     "HPIAALL": false,
     "HPIADrivers": true,
-    "HPIAFirmware": true,
+    "HPIAFirmware": false,
     "HPIASoftware": true,
     "HPTPMUpdate": false,
     "HPBIOSUpdate": true
