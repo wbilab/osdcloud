@@ -65,11 +65,11 @@ $OSDCloudGUIParam = @'
     "SkipAutopilot":  true,
     "SkitAutopilotOOBE":  true,
     "SkipOOBEDeploy":  true,
-    "HPIAALL": false,
+    "HPIAALL": true,
     "HPIADrivers": true,
-    "HPIAFirmware": false,
+    "HPIAFirmware": true,
     "HPIASoftware": true,
-    "HPTPMUpdate": false,
+    "HPTPMUpdate": true,
     "HPBIOSUpdate": true
 }
 '@
