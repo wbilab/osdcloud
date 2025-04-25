@@ -26,6 +26,9 @@ Invoke-WebRequest -Uri `$nircmdUrl -OutFile `$downloadPath
 # Entpacken Sie das ZIP-Archiv
 Expand-Archive -Path `$downloadPath -DestinationPath `$extractPath -Force
 
+# Warten fuer 3 Sekunden
+Start-Sleep -Seconds 3
+
 # Simulieren von 'Shift+F10'
 Start-Process -FilePath `$extractPathexe -ArgumentList 'sendkeypress Shift+F10' -Wait
 
