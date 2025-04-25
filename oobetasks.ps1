@@ -42,26 +42,29 @@ Start-Sleep -Seconds 3
 # SHIFT+F10 mit Wiederholung
 # =========================
 
+# === Shift+F10 mit Wiederholung + Prüfung ===
 `$maxRetries = 5
 `$success = `$false
 
 for (`$i = 1; `$i -le `$maxRetries; `$i++) {
-    Write-Host "[`$i/`$maxRetries] Sende Shift+F10..."
+    Write-Host "[`$i/`$maxRetries] Shift+F10 senden..."
     Start-Process -FilePath `$extractPathexe -ArgumentList 'sendkeypress shift+f10' -Wait
     Start-Sleep -Seconds 3
 
     if (Get-Process -Name "cmd" -ErrorAction SilentlyContinue) {
-        Write-Host "cmd.exe erkannt  Shift+F10 war erfolgreich."
-        `$success = $true
+        Write-Host "cmd.exe erkannt Shift+F10 war erfolgreich."
+        `$success = `$true
         break
     } else {
-        Write-Warning "cmd.exe nicht erkannt. Wiederhole..."
+        Write-Warning "cmd.exe nicht erkannt. Nächster Versuch..."
     }
 }
 
 if (-not `$success) {
-    Write-Error "Shift+F10 konnte nicht erfolgreich ausgeführt werden  abbrechen oder manuell prüfen."
-    exit 1
+    Write-Error "Shift+F10 konnte nicht erfolgreich ausgeführt werden."
+} else {
+    # Optional: Fensterwechsel, wenn cmd.exe im Hintergrund ist
+    Start-Process -FilePath `$extractPathexe -ArgumentList 'sendkeypress Alt+Tab' -Wait
 }
 "@
 
