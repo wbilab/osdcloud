@@ -38,11 +38,8 @@ Start-Sleep -Seconds 3
 # Simulieren von 'ALT+TAB'
 #Start-Process -FilePath `$extractPathexe -ArgumentList 'sendkeypress Alt+Tab' -Wait
 
-# =========================
-# SHIFT+F10 mit Wiederholung
-# =========================
 
-# === Shift+F10 mit Wiederholung + Prüfung ===
+# === Shift+F10 mit Wiederholung Pruefung ===
 `$maxRetries = 5
 `$success = `$false
 
