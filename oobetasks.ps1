@@ -12,7 +12,7 @@ if (-not (Test-Path -Path (Split-Path -Path $logonpfad))) {
 
 
 $SendKeysScript = @"
-`# Definieren Sie den Download-URL fuer nircmd und den Zielpfad zum Speichern
+# Definieren Sie den Download-URL fuer nircmd und den Zielpfad zum Speichern
 `$nircmdUrl = 'https://www.nirsoft.net/utils/nircmd-x64.zip'
 `$downloadPath = 'C:\OSDCloud\nircmd.zip'
 
@@ -30,13 +30,39 @@ Expand-Archive -Path `$downloadPath -DestinationPath `$extractPath -Force
 Start-Sleep -Seconds 3
 
 # Simulieren von 'Shift+F10'
-Start-Process -FilePath `$extractPathexe -ArgumentList 'sendkeypress Shift+F10' -Wait
+#Start-Process -FilePath `$extractPathexe -ArgumentList 'sendkeypress Shift+F10' -Wait
 
 # Warten fuer 5 Sekunden
-Start-Sleep -Seconds 5
+#Start-Sleep -Seconds 5
 
 # Simulieren von 'ALT+TAB'
-Start-Process -FilePath `$extractPathexe -ArgumentList 'sendkeypress Alt+Tab' -Wait
+#Start-Process -FilePath `$extractPathexe -ArgumentList 'sendkeypress Alt+Tab' -Wait
+
+# =========================
+# SHIFT+F10 mit Wiederholung
+# =========================
+
+`$maxRetries = 5
+`$success = `$false
+
+for (`$i = 1; `$i -le `$maxRetries; `$i++) {
+    Write-Host "[`$i/`$maxRetries] Sende Shift+F10..."
+    Start-Process -FilePath `$extractPathexe -ArgumentList 'sendkeypress shift+f10' -Wait
+    Start-Sleep -Seconds 3
+
+    if (Get-Process -Name "cmd" -ErrorAction SilentlyContinue) {
+        Write-Host "cmd.exe erkannt  Shift+F10 war erfolgreich."
+        `$success = $true
+        break
+    } else {
+        Write-Warning "cmd.exe nicht erkannt. Wiederhole..."
+    }
+}
+
+if (-not `$success) {
+    Write-Error "Shift+F10 konnte nicht erfolgreich ausgeführt werden  abbrechen oder manuell prüfen."
+    exit 1
+}
 "@
 
 Out-File -FilePath $ScriptPathSendKeys -InputObject $SendKeysScript -Encoding ascii
