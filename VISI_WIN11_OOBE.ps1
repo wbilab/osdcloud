@@ -65,6 +65,8 @@ $OSDCloudGUIParam = @'
     "SkipAutopilot":  true,
     "SkitAutopilotOOBE":  true,
     "SkipOOBEDeploy":  true,
+    "WindowsUpdate": true,
+    "WindowsUpdateDrivers": true,
     "HPIAALL": true,
     "HPIADrivers": true,
     "HPIAFirmware": true,
