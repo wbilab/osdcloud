@@ -61,17 +61,17 @@ Try {
     if ($count -eq 0) {
         Add-LogLine "No updates available."
     } else {
-        Add-LogLine "Found $count update(s)."
+        Add-LogLine "Found $count update(s):"
         foreach ($update in $updates) {
             $cat = ($update.Categories | ForEach-Object { $_.Name }) -join ", "
-            Add-LogLine " → $($update.Title)  [$cat]"
+            Add-LogLine " -> $($update.Title) [$cat]"
         }
 
         Add-LogLine "Installing all updates..."
         $results = Install-WindowsUpdate -MicrosoftUpdate -AcceptAll -IgnoreReboot -ErrorAction Continue
 
         foreach ($res in $results) {
-            Add-LogLine "$($res.Title) → $($res.ResultCode)"
+            Add-LogLine "$($res.Title) -> $($res.ResultCode)"
         }
 
         Add-LogLine "Update process finished."
