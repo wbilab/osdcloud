@@ -1,3 +1,6 @@
+Write-Host -ForegroundColor DarkGray "Disable Bitlocker Win11 24H2"
+REG ADD HKLM\SYSTEM\CurrentControlSet\Control\BitLocker /v PreventDeviceEncryption /t REG_DWORD /d 1 /f
+
 $logonpfad = "$env:SystemDrive\WINDOWS\System32\GroupPolicy\User\Scripts\Logon"
 
 $ScriptPathSendKeys = $(Join-Path -Path $logonpfad -ChildPath "1-SendKeys.ps1")
@@ -100,9 +103,6 @@ if ([System.Environment]::OSVersion.Version -ge (New-Object Version "10.0.22000.
 write-Host -ForegroundColor DarkGray "Start Built-In Apps Cleanup"
 Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/wbilab/osdcloud/main/Windows11CleanupBuiltinApps.ps1" -Wait
 }
-
-Write-Host -ForegroundColor DarkGray "Disable Bitlocker Win11 24H2"
-REG ADD HKLM\SYSTEM\CurrentControlSet\Control\BitLocker /v PreventDeviceEncryption /t REG_DWORD /d 1 /f
 
 Write-Host -ForegroundColor DarkGray "Executing Windows & Driver Update Installer"
 Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/wbilab/osdcloud/main/AutoInstall-WindowsUpdates.ps1" -Wait
