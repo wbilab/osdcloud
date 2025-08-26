@@ -26,7 +26,7 @@ $OSDCloudGUIParam = @'
     "OSActivation":  "Retail",
     "OSEdition":  "Pro",
     "OSLanguage":  "de-de",
-    "OSImageIndex":  9,
+    "OSImageIndex":  8,
     "OSName":  "Windows 11 24H2 x64",
     "OSReleaseID":  "24H2",
     "OSVersion":  "Windows 11",
@@ -85,6 +85,10 @@ Start-OSDCloudGUI
 #================================================
 #  [PostOS] SetupComplete CMD Command Line
 #================================================
+
+Write-Host -ForegroundColor DarkGray "Disable Bitlocker Win11 24H2"
+REG ADD HKLM\SYSTEM\CurrentControlSet\Control\BitLocker /v PreventDeviceEncryption /t REG_DWORD /d 1 /f
+
 Write-Host -ForegroundColor Green "Create C:\Windows\Setup\Scripts\SetupComplete.cmd"
 $SetupCompleteCMD = @'
 powershell.exe -Command Set-ExecutionPolicy RemoteSigned -Force
