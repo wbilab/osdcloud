@@ -31,8 +31,7 @@ $OSDCloudGUIParam = @'
     "OSReleaseID":  "24H2",
     "OSVersion":  "Windows 11",
     "OSActivationValues":  [
-                                "Retail",
-                                "Volume"
+                                "Retail"
                             ],
     "OSEditionValues":  [
                             "Pro",
