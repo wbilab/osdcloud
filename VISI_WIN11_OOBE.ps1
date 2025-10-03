@@ -45,12 +45,12 @@ $OSDCloudGUIParam = @'
                             ],
     "OSNameValues":  [
                             "Windows 11 24H2 x64",
-                            "Windows 11 23H2 x64",
+                            "Windows 11 25H2 x64",
                             "Windows 10 22H2 x64"
                         ],
     "OSReleaseIDValues":  [
                                 "24H2",
-                                "23H2"
+                                "25H2"
                             ],
     "OSVersionValues":  [
                             "Windows 11",
