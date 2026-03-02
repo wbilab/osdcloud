@@ -105,9 +105,8 @@ if (`$AutoPilotResult -eq "Aborted") {
     Write-Host -ForegroundColor Green "Autopilot-Registrierung abgeschlossen."
 }
 
-# --- Englisches Pop-up mit 60-Sekunden-Timer (Im Vordergrund) ---
 `$wshell = New-Object -ComObject WScript.Shell
-# 4 = Yes/No, 32 = Question Icon, 4096 = System Modal (Zwingt das Fenster in den Vordergrund)
+# 4096 zwingt das Popup absolut in den Vordergrund
 `$answer = `$wshell.Popup("Do you want to install Windows and Driver Updates now?`n`nAuto-starting in 60 seconds.", 60, "Install Updates?", 4 + 32 + 4096)
 
 if (`$answer -eq 7) {
