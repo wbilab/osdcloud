@@ -23,6 +23,7 @@ $SendKeysScript = @"
 `$extractPathexe = 'C:\OSDCloud\nircmd\nircmd.exe'
 
 # Laden Sie nircmd herunter
+if (-not (Test-Path 'C:\OSDCloud')) { New-Item -Path 'C:\OSDCloud' -ItemType Directory -Force | Out-Null }
 Invoke-WebRequest -Uri `$nircmdUrl -OutFile `$downloadPath
 
 # Entpacken Sie das ZIP-Archiv
@@ -82,10 +83,11 @@ Set-ItemProperty -Path "C:\WINDOWS\System32\GroupPolicy" -Name Attributes -Value
 Set-ItemProperty -Path "C:\WINDOWS\System32\GroupPolicy\User\Scripts\psscripts.ini" -Name Attributes -Value ([System.IO.FileAttributes]::Hidden)
 
 
-# --- Hier startet der OOBE Block mit den neuen Anpassungen ---
+# --- OOBE Block ---
 $OOBEScript =@"
+if (-not (Test-Path 'C:\OSDCloud')) { New-Item -Path 'C:\OSDCloud' -ItemType Directory -Force | Out-Null }
 `$Global:Transcript = "`$((Get-Date).ToString('yyyy-MM-dd-HHmmss'))-OOBEScripts.log"
-Start-Transcript -Path (Join-Path "`$env:ProgramData\Microsoft\IntuneManagementExtension\Logs\OSD\" `$Global:Transcript) -ErrorAction Ignore | Out-Null
+Start-Transcript -Path "C:\OSDCloud\`$Global:Transcript" -ErrorAction Ignore | Out-Null
 
 Write-Host -ForegroundColor DarkGray "Installing OSD PS Module"
 Start-Process PowerShell -ArgumentList "-NoL -C Install-Module OSD -Force -Verbose" -Wait
@@ -99,10 +101,10 @@ Write-Host -ForegroundColor DarkGray "Executing Keyboard Language Skript"
 Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/wbilab/osdcloud/main/Set-KeyboardLanguage.ps1" -Wait
 
 Write-Host -ForegroundColor DarkGray "Executing VISI Autopilot Registration"
-Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/wbilab/osdcloud/main/test-VISI_OSDCloud_AutoPilot.ps1" -Wait
+Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/wbilab/osdcloud/main/VISI_OSDCloud_AutoPilot.ps1" -Wait
 
-# --- NEU: Warteschleife auf Flag-Datei ---
-`$FlagPath = "`$env:ProgramData\AutopilotDone.flag"
+# --- Warteschleife auf Flag-Datei in C:\OSDCloud ---
+`$FlagPath = "C:\OSDCloud\AutopilotDone.flag"
 Write-Host -ForegroundColor DarkGray "Waiting for Autopilot process to finalize..."
 while (-not (Test-Path -Path `$FlagPath)) {
     Start-Sleep -Seconds 5
@@ -118,7 +120,7 @@ if (`$AutoPilotResult -eq "Aborted") {
     Write-Host -ForegroundColor Green "Autopilot-Registrierung abgeschlossen."
 }
 
-# --- NEU: Englisches Pop-up mit 60-Sekunden-Timer ---
+# --- Englisches Pop-up mit 60-Sekunden-Timer ---
 `$wshell = New-Object -ComObject WScript.Shell
 # 4 = Yes/No Buttons, 32 = Question Icon. Default Response = Yes if timeout (60s) expires.
 `$answer = `$wshell.Popup("Do you want to install Windows and Driver Updates now?`n`nAuto-starting in 60 seconds.", 60, "Install Updates?", 4 + 32)
@@ -128,7 +130,7 @@ if (`$answer -eq 7) {
     Write-Host -ForegroundColor Yellow "Updates skipped by user."
 } else {
     Write-Host -ForegroundColor DarkGray "Executing Windows & Driver Update Installer"
-    Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/wbilab/osdcloud/main/test-AutoInstall-WindowsUpdates.ps1" -Wait
+    Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/wbilab/osdcloud/main/AutoInstall-WindowsUpdates.ps1" -Wait
 }
 
 Write-Host -ForegroundColor DarkGray "Executing Cleanup Script"

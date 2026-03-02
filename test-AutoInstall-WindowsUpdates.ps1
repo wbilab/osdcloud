@@ -1,8 +1,8 @@
 Add-Type -AssemblyName System.Windows.Forms
 [System.Windows.Forms.Application]::EnableVisualStyles()
 
-# Logging setup
-$LogDir = "$env:ProgramData\Microsoft\IntuneManagementExtension\Logs\OSD"
+# --- Logging zentral nach C:\OSDCloud verschoben ---
+$LogDir = "C:\OSDCloud"
 if (!(Test-Path $LogDir)) { New-Item -ItemType Directory -Path $LogDir -Force | Out-Null }
 $LogFile = Join-Path $LogDir "WindowsUpdateLog_$(Get-Date -Format yyyyMMdd_HHmmss).txt"
 New-Item -ItemType File -Path $LogFile -Force | Out-Null
@@ -32,7 +32,6 @@ $form.Controls.Add($CancelButton)
 $Global:LastLineRead = 0
 
 # --- HINTERGRUND-PROZESS ---
-# Dieser Block läuft entkoppelt vom Fenster im Hintergrund
 $UpdateScript = {
     param($LogFilePath)
     
@@ -79,15 +78,13 @@ $Job = Start-Job -ScriptBlock $UpdateScript -ArgumentList $LogFile
 
 # --- TIMER (Aktualisiert das GUI flüssig) ---
 $Timer = New-Object System.Windows.Forms.Timer
-$Timer.Interval = 1000 # 1 Sekunde
+$Timer.Interval = 1000 
 $Timer.Add_Tick({
-    # Lese neue Zeilen aus der Log-Datei
     $content = Get-Content $LogFile -ErrorAction SilentlyContinue
     if ($content -and $content.Count -gt $Global:LastLineRead) {
         for ($i = $Global:LastLineRead; $i -lt $content.Count; $i++) {
             $listbox.Items.Add($content[$i])
             
-            # Prüfen ob Hintergrundprozess fertig ist
             if ($content[$i] -match "---END---") {
                 $Timer.Stop()
                 $CancelButton.Text = "Close Window"
@@ -98,7 +95,6 @@ $Timer.Add_Tick({
         $listbox.TopIndex = $listbox.Items.Count - 1
     }
     
-    # Notfall-Check, falls der Job abstürzt
     if ($Job.State -ne 'Running' -and $Timer.Enabled) {
         $Timer.Stop()
         $CancelButton.Text = "Close Window"
@@ -111,7 +107,6 @@ $CancelButton.Add_Click({
     if ($CancelButton.Text -eq "Close Window") {
         $form.Close()
     } else {
-        # Bricht den Update-Prozess gewaltsam ab
         $Timer.Stop()
         Stop-Job $Job -ErrorAction SilentlyContinue
         Remove-Job $Job -ErrorAction SilentlyContinue
@@ -124,12 +119,10 @@ $CancelButton.Add_Click({
     }
 })
 
-# Aufräumen, falls das Fenster über das 'X' geschlossen wird
 $form.Add_FormClosing({
     Stop-Job $Job -ErrorAction SilentlyContinue
     Remove-Job $Job -ErrorAction SilentlyContinue
 })
 
-# Start GUI
 $Timer.Start()
 $form.ShowDialog() | Out-Null
