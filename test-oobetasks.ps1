@@ -99,7 +99,7 @@ Write-Host -ForegroundColor DarkGray "Executing Keyboard Language Skript"
 Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/wbilab/osdcloud/main/Set-KeyboardLanguage.ps1" -Wait
 
 Write-Host -ForegroundColor DarkGray "Executing VISI Autopilot Registration"
-Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/wbilab/osdcloud/main/VISI_OSDCloud_AutoPilot.ps1" -Wait
+Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/wbilab/osdcloud/main/test-VISI_OSDCloud_AutoPilot.ps1" -Wait
 
 # --- NEU: Warteschleife auf Flag-Datei ---
 `$FlagPath = "`$env:ProgramData\AutopilotDone.flag"
@@ -128,7 +128,7 @@ if (`$answer -eq 7) {
     Write-Host -ForegroundColor Yellow "Updates skipped by user."
 } else {
     Write-Host -ForegroundColor DarkGray "Executing Windows & Driver Update Installer"
-    Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/wbilab/osdcloud/main/AutoInstall-WindowsUpdates.ps1" -Wait
+    Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/wbilab/osdcloud/main/test-AutoInstall-WindowsUpdates.ps1" -Wait
 }
 
 Write-Host -ForegroundColor DarkGray "Executing Cleanup Script"
