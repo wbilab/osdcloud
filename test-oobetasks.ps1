@@ -88,7 +88,7 @@ Write-Host -ForegroundColor DarkGray "Executing Keyboard Language Skript"
 Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/wbilab/osdcloud/main/Set-KeyboardLanguage.ps1" -Wait
 
 Write-Host -ForegroundColor DarkGray "Executing VISI Autopilot Registration"
-Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/wbilab/osdcloud/main/VISI_OSDCloud_AutoPilot.ps1" -Wait
+Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/wbilab/osdcloud/main/test-VISI_OSDCloud_AutoPilot.ps1" -Wait
 
 `$FlagPath = "C:\OSDCloud\AutopilotDone.flag"
 Write-Host -ForegroundColor DarkGray "Waiting for Autopilot process to finalize..."
@@ -105,14 +105,16 @@ if (`$AutoPilotResult -eq "Aborted") {
     Write-Host -ForegroundColor Green "Autopilot-Registrierung abgeschlossen."
 }
 
+# --- Englisches Pop-up mit 60-Sekunden-Timer (Im Vordergrund) ---
 `$wshell = New-Object -ComObject WScript.Shell
-`$answer = `$wshell.Popup("Do you want to install Windows and Driver Updates now?`n`nAuto-starting in 60 seconds.", 60, "Install Updates?", 4 + 32)
+# 4 = Yes/No, 32 = Question Icon, 4096 = System Modal (Zwingt das Fenster in den Vordergrund)
+`$answer = `$wshell.Popup("Do you want to install Windows and Driver Updates now?`n`nAuto-starting in 60 seconds.", 60, "Install Updates?", 4 + 32 + 4096)
 
 if (`$answer -eq 7) {
     Write-Host -ForegroundColor Yellow "Updates skipped by user."
 } else {
     Write-Host -ForegroundColor DarkGray "Executing Windows & Driver Update Installer"
-    Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/wbilab/osdcloud/main/AutoInstall-WindowsUpdates.ps1" -Wait
+    Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/wbilab/osdcloud/main/test-AutoInstall-WindowsUpdates.ps1" -Wait
 }
 
 Write-Host -ForegroundColor DarkGray "Executing Cleanup Script"
