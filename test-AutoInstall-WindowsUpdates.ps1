@@ -1,19 +1,26 @@
 Add-Type -AssemblyName System.Windows.Forms
 [System.Windows.Forms.Application]::EnableVisualStyles()
 
-# --- Logging zentral nach C:\OSDCloud verschoben ---
 $LogDir = "C:\OSDCloud"
 if (!(Test-Path $LogDir)) { New-Item -ItemType Directory -Path $LogDir -Force | Out-Null }
 $LogFile = Join-Path $LogDir "WindowsUpdateLog_$(Get-Date -Format yyyyMMdd_HHmmss).txt"
 New-Item -ItemType File -Path $LogFile -Force | Out-Null
 
-# GUI Setup
+function Add-LogLine($text) {
+    $timestamp = Get-Date -Format "HH:mm:ss"
+    $line = "[$timestamp] $text"
+    $listbox.Items.Add($line)
+    $line | Out-File -FilePath $LogFile -Append -Encoding UTF8
+    $listbox.TopIndex = $listbox.Items.Count - 1
+    $form.Refresh()
+}
+
+$Global:CancelUpdates = $false
+
 $form = New-Object System.Windows.Forms.Form
 $form.Text = "Windows & Driver Update Installer"
 $form.Width = 800
 $form.Height = 600
-$form.TopMost = $true
-$form.StartPosition = 'CenterScreen'
 
 $listbox = New-Object System.Windows.Forms.ListBox
 $listbox.Dock = 'Top'
@@ -27,102 +34,82 @@ $CancelButton.Dock = 'Bottom'
 $CancelButton.Height = 50
 $CancelButton.BackColor = 'LightCoral'
 $CancelButton.Font = New-Object System.Drawing.Font("Arial", 12, [System.Drawing.FontStyle]::Bold)
+$CancelButton.Add_Click({
+    $Global:CancelUpdates = $true
+    Add-LogLine "--> CANCEL REQUESTED! Stopping after current update finishes..."
+    $CancelButton.Enabled = $false
+    $CancelButton.Text = "Canceling..."
+})
 $form.Controls.Add($CancelButton)
 
-$Global:LastLineRead = 0
+$form.TopMost = $true
+$form.Show()
 
-# --- HINTERGRUND-PROZESS ---
-$UpdateScript = {
-    param($LogFilePath)
-    
-    function LogIt($text) { 
-        "[$((Get-Date).ToString('HH:mm:ss'))] $text" | Out-File -FilePath $LogFilePath -Append -Encoding UTF8 
-    }
-    
-    LogIt "Initializing update engine in background..."
-    Try {
-        [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-        Install-PackageProvider -Name NuGet -Force -ErrorAction Stop | Out-Null
-        Install-Module -Name PSWindowsUpdate -Force -AllowClobber -ErrorAction Stop | Out-Null
-        LogIt "PSWindowsUpdate module installed."
-        
-        Import-Module PSWindowsUpdate
-        Add-WUServiceManager -MicrosoftUpdate -Confirm:$false | Out-Null
-        LogIt "Microsoft Update enabled. Scanning for updates..."
-        
-        $updates = Get-WindowsUpdate -MicrosoftUpdate -ErrorAction Stop
-        
-        if ($updates.Count -eq 0) {
-            LogIt "No updates available."
-        } else {
-            LogIt "Found $($updates.Count) update(s). Starting installation..."
-            foreach ($update in $updates) {
-                LogIt "Installing: $($update.Title)"
-                if ($update.KBArticleID) {
-                    Install-WindowsUpdate -KBArticleID $update.KBArticleID -AcceptAll -IgnoreReboot -Confirm:$false | Out-Null
-                } else {
-                    Install-WindowsUpdate -Title $update.Title -AcceptAll -IgnoreReboot -Confirm:$false | Out-Null
-                }
-                LogIt "Done: $($update.Title)"
-            }
-            LogIt "Update process finished."
-        }
-    } Catch {
-        LogIt "Error: $_"
-    }
-    LogIt "---END---"
+Start-Sleep -Seconds 2
+Add-LogLine "Initializing update engine..."
+
+Try {
+    [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+    Install-PackageProvider -Name NuGet -Force -ErrorAction Stop
+    Install-Module -Name PSWindowsUpdate -Force -AllowClobber -ErrorAction Stop
+    Add-LogLine "PSWindowsUpdate module installed."
+} Catch {
+    Add-LogLine "Failed to install PSWindowsUpdate: $_"
+    return
 }
 
-# Starte den Hintergrund-Prozess
-$Job = Start-Job -ScriptBlock $UpdateScript -ArgumentList $LogFile
+Try {
+    Import-Module PSWindowsUpdate
+    Add-WUServiceManager -MicrosoftUpdate -Confirm:$false | Out-Null
+    Add-LogLine "Microsoft Update enabled (includes drivers)."
+} Catch {
+    Add-LogLine "Failed to enable Microsoft Update: $_"
+    return
+}
 
-# --- TIMER (Aktualisiert das GUI flüssig) ---
-$Timer = New-Object System.Windows.Forms.Timer
-$Timer.Interval = 1000 
-$Timer.Add_Tick({
-    $content = Get-Content $LogFile -ErrorAction SilentlyContinue
-    if ($content -and $content.Count -gt $Global:LastLineRead) {
-        for ($i = $Global:LastLineRead; $i -lt $content.Count; $i++) {
-            $listbox.Items.Add($content[$i])
-            
-            if ($content[$i] -match "---END---") {
-                $Timer.Stop()
-                $CancelButton.Text = "Close Window"
-                $CancelButton.BackColor = 'LightGreen'
-            }
-        }
-        $Global:LastLineRead = $content.Count
-        $listbox.TopIndex = $listbox.Items.Count - 1
-    }
+Try {
+    Add-LogLine "Scanning for updates... (Window may freeze for several minutes!)"
+    $form.Refresh()
+    [System.Windows.Forms.Application]::DoEvents() 
     
-    if ($Job.State -ne 'Running' -and $Timer.Enabled) {
-        $Timer.Stop()
-        $CancelButton.Text = "Close Window"
-        $CancelButton.BackColor = 'LightGreen'
-    }
-})
+    $updates = Get-WindowsUpdate -MicrosoftUpdate -ErrorAction Stop
+    $count = $updates.Count
 
-# --- BUTTON LOGIK ---
-$CancelButton.Add_Click({
-    if ($CancelButton.Text -eq "Close Window") {
-        $form.Close()
+    if ($count -eq 0) {
+        Add-LogLine "No updates available."
     } else {
-        $Timer.Stop()
-        Stop-Job $Job -ErrorAction SilentlyContinue
-        Remove-Job $Job -ErrorAction SilentlyContinue
+        Add-LogLine "Found $count update(s). Starting installation..."
         
-        $listbox.Items.Add("--> UPDATE PROCESS CANCELLED BY USER!")
-        $listbox.TopIndex = $listbox.Items.Count - 1
-        
-        $CancelButton.Text = "Close Window"
-        $CancelButton.BackColor = 'LightGreen'
+        foreach ($update in $updates) {
+            [System.Windows.Forms.Application]::DoEvents() 
+            
+            if ($Global:CancelUpdates) {
+                Add-LogLine "Update process aborted by user."
+                break
+            }
+
+            Add-LogLine "Installing: $($update.Title)"
+            if ($update.KBArticleID) {
+                Install-WindowsUpdate -KBArticleID $update.KBArticleID -AcceptAll -IgnoreReboot -Confirm:$false | Out-Null
+            } else {
+                Install-WindowsUpdate -Title $update.Title -AcceptAll -IgnoreReboot -Confirm:$false | Out-Null
+            }
+            Add-LogLine "Done: $($update.Title)"
+        }
+
+        Add-LogLine "Update process finished."
     }
-})
 
-$form.Add_FormClosing({
-    Stop-Job $Job -ErrorAction SilentlyContinue
-    Remove-Job $Job -ErrorAction SilentlyContinue
-})
+} Catch {
+    Add-LogLine "Unexpected error during update process: $_"
+}
 
-$Timer.Start()
-$form.ShowDialog() | Out-Null
+Add-LogLine "Window will close in 15 seconds..."
+
+for ($i = 15; $i -ge 1; $i--) {
+    $form.Text = "Closing in $i seconds..."
+    [System.Windows.Forms.Application]::DoEvents() 
+    Start-Sleep -Seconds 1
+}
+
+$form.Close()

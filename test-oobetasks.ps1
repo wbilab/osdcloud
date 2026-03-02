@@ -6,7 +6,6 @@ $logonpfad = "$env:SystemDrive\WINDOWS\System32\GroupPolicy\User\Scripts\Logon"
 $ScriptPathSendKeys = $(Join-Path -Path $logonpfad -ChildPath "1-SendKeys.ps1")
 $ScriptPathOOBE = $(Join-Path -Path $logonpfad -ChildPath "2-OOBE.ps1")
 
-# Überprüfe, ob der Ordner existiert. Wenn nicht, erstelle ihn.
 if (-not (Test-Path -Path (Split-Path -Path $logonpfad))) {
     New-Item -Path $logonpfad -ItemType Directory -Force | Out-Null
     New-Item -Path "$env:SystemDrive\WINDOWS\System32\GroupPolicy\User\Scripts\Logoff" -ItemType Directory -Force | Out-Null
@@ -14,25 +13,16 @@ if (-not (Test-Path -Path (Split-Path -Path $logonpfad))) {
 }
 
 $SendKeysScript = @"
-# Definieren Sie den Download-URL fuer nircmd und den Zielpfad zum Speichern
 `$nircmdUrl = 'https://www.nirsoft.net/utils/nircmd-x64.zip'
 `$downloadPath = 'C:\OSDCloud\nircmd.zip'
-
-# Zielverzeichnis fuer die extrahierten Dateien
 `$extractPath = 'C:\OSDCloud\nircmd'
 `$extractPathexe = 'C:\OSDCloud\nircmd\nircmd.exe'
 
-# Laden Sie nircmd herunter
 if (-not (Test-Path 'C:\OSDCloud')) { New-Item -Path 'C:\OSDCloud' -ItemType Directory -Force | Out-Null }
 Invoke-WebRequest -Uri `$nircmdUrl -OutFile `$downloadPath
-
-# Entpacken Sie das ZIP-Archiv
 Expand-Archive -Path `$downloadPath -DestinationPath `$extractPath -Force
-
-# Warten fuer 3 Sekunden
 Start-Sleep -Seconds 3
 
-# === Shift+F10 mit Wiederholung Pruefung ===
 `$maxRetries = 5
 `$success = `$false
 
@@ -53,7 +43,6 @@ for (`$i = 1; `$i -le `$maxRetries; `$i++) {
 if (-not `$success) {
     Write-Error "Shift+F10 konnte nicht erfolgreich ausgeführt werden."
 } else {
-    # Optional: Fensterwechsel, wenn cmd.exe im Hintergrund ist
     Start-Process -FilePath `$extractPathexe -ArgumentList 'sendkeypress Alt+Tab' -Wait
 }
 "@
@@ -82,8 +71,6 @@ Out-File -FilePath "C:\WINDOWS\System32\GroupPolicy\gpt.ini" -InputObject $gpt -
 Set-ItemProperty -Path "C:\WINDOWS\System32\GroupPolicy" -Name Attributes -Value ([System.IO.FileAttributes]::Hidden)
 Set-ItemProperty -Path "C:\WINDOWS\System32\GroupPolicy\User\Scripts\psscripts.ini" -Name Attributes -Value ([System.IO.FileAttributes]::Hidden)
 
-
-# --- OOBE Block ---
 $OOBEScript =@"
 if (-not (Test-Path 'C:\OSDCloud')) { New-Item -Path 'C:\OSDCloud' -ItemType Directory -Force | Out-Null }
 `$Global:Transcript = "`$((Get-Date).ToString('yyyy-MM-dd-HHmmss'))-OOBEScripts.log"
@@ -101,16 +88,14 @@ Write-Host -ForegroundColor DarkGray "Executing Keyboard Language Skript"
 Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/wbilab/osdcloud/main/Set-KeyboardLanguage.ps1" -Wait
 
 Write-Host -ForegroundColor DarkGray "Executing VISI Autopilot Registration"
-Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/wbilab/osdcloud/main/test-VISI_OSDCloud_AutoPilot.ps1" -Wait
+Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/wbilab/osdcloud/main/VISI_OSDCloud_AutoPilot.ps1" -Wait
 
-# --- Warteschleife auf Flag-Datei in C:\OSDCloud ---
 `$FlagPath = "C:\OSDCloud\AutopilotDone.flag"
 Write-Host -ForegroundColor DarkGray "Waiting for Autopilot process to finalize..."
 while (-not (Test-Path -Path `$FlagPath)) {
     Start-Sleep -Seconds 5
 }
 
-# Status auslesen und Flag löschen
 `$AutoPilotResult = Get-Content -Path `$FlagPath
 Remove-Item -Path `$FlagPath -Force -ErrorAction SilentlyContinue
 
@@ -120,17 +105,14 @@ if (`$AutoPilotResult -eq "Aborted") {
     Write-Host -ForegroundColor Green "Autopilot-Registrierung abgeschlossen."
 }
 
-# --- Englisches Pop-up mit 60-Sekunden-Timer ---
 `$wshell = New-Object -ComObject WScript.Shell
-# 4 = Yes/No Buttons, 32 = Question Icon. Default Response = Yes if timeout (60s) expires.
 `$answer = `$wshell.Popup("Do you want to install Windows and Driver Updates now?`n`nAuto-starting in 60 seconds.", 60, "Install Updates?", 4 + 32)
 
-# 7 = No
 if (`$answer -eq 7) {
     Write-Host -ForegroundColor Yellow "Updates skipped by user."
 } else {
     Write-Host -ForegroundColor DarkGray "Executing Windows & Driver Update Installer"
-    Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/wbilab/osdcloud/main/test-AutoInstall-WindowsUpdates.ps1" -Wait
+    Start-Process PowerShell -ArgumentList "-NoL -C Invoke-WebPSScript https://raw.githubusercontent.com/wbilab/osdcloud/main/AutoInstall-WindowsUpdates.ps1" -Wait
 }
 
 Write-Host -ForegroundColor DarkGray "Executing Cleanup Script"

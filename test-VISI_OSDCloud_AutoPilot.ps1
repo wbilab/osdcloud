@@ -18,7 +18,6 @@ public class Win32 {
 
 Add-Type -AssemblyName System.Windows.Forms
 
-# --- Alle Pfade auf C:\OSDCloud vereint ---
 $workingDirectory = "C:\OSDCloud"
 if (-not (Test-Path $workingDirectory)) { New-Item -Path $workingDirectory -ItemType Directory -Force | Out-Null }
 
@@ -35,12 +34,9 @@ Check-AutopilotPrerequisites
 
 Stop-Transcript
 
-# Pfad zur Logdatei
 $logDateiPfad = (Join-Path "$workingDirectory\" $Global:Transcript)
-# Lese die Logdatei
 $logInhalt = Get-Content -Path $logDateiPfad
 
-# Durchsuche den Inhalt der Log Datei von Autopilot Pre Check und extrahiere den Wert
 $KeyboardlayoutZeile = $logInhalt | Where-Object { $_ -match "Keyboardlayout" }
 $tpmpresentZeile = $logInhalt | Where-Object { $_ -match "Tpm present" }
 $tpmreadyZeile = $logInhalt | Where-Object { $_ -match "Tpm ready" }
@@ -48,32 +44,18 @@ $tpmenabledZeile = $logInhalt | Where-Object { $_ -match "Tpm enabled" }
 $biosserialnummerZeile = $logInhalt | Where-Object { $_ -match "Bios Serialnumber" }
 $approfileZeile = $logInhalt | Where-Object { $_ -match "Cached AP Profile" }
 
-# Teile die Zeile anhand des Doppelpunkts (:) auf, um den Werte aus dem Autopilot PreCheck zu extrahieren und definiere Variabeln
-$KeyboardlayoutTeile = $KeyboardlayoutZeile -split ":"
-$Keyboardlayout = $KeyboardlayoutTeile[1].Trim()
-
-$tpmpresentTeile = $tpmpresentZeile -split ":"
-$tpmpresent = $tpmpresentTeile[1].Trim()
-
-$tpmreadyTeile = $tpmreadyZeile -split ":"
-$tpmready = $tpmreadyTeile[1].Trim()
-
-$tpmenabledTeile = $tpmenabledZeile -split ":"
-$tpmenabled= $tpmenabledTeile[1].Trim()
-
-$biosserialnummerTeile = $biosserialnummerZeile -split ":"
-$biosserialnummer = $biosserialnummerTeile[1].Trim()
-
-$approfileTeile = $approfileZeile -split ":"
-$approfile = $approfileTeile[1].Trim()
+$Keyboardlayout = ($KeyboardlayoutZeile -split ":")[1].Trim()
+$tpmpresent = ($tpmpresentZeile -split ":")[1].Trim()
+$tpmready = ($tpmreadyZeile -split ":")[1].Trim()
+$tpmenabled= ($tpmenabledZeile -split ":")[1].Trim()
+$biosserialnummer = ($biosserialnummerZeile -split ":")[1].Trim()
+$approfile = ($approfileZeile -split ":")[1].Trim()
 
 $rawImageUrl = "https://raw.githubusercontent.com/wbilab/osdcloud/main/Vi_Logo.png"
 Invoke-WebRequest $rawImageUrl -OutFile (Join-Path $workingDirectory "Vi_Logo.png")
 $logo = Join-Path $workingDirectory "Vi_Logo.png"
 
 Save-Script -Name Get-WindowsAutoPilotInfo -Path $workingDirectory -Force
-
-# Erstelle das Hauptfenster
 
 [void][System.Reflection.Assembly]::LoadWithPartialName('System.Windows.Forms')
 
@@ -105,7 +87,7 @@ $Button1.Add_Click({
     $Form.Refresh()
 
     $Form.WindowState = "Minimized" 
-    Set-Location -Path $workingDirectory
+    cd $workingDirectory
     .\Get-WindowsAutoPilotInfo.ps1 -GroupTag InCloud -Online -Assign
     $Script:AutoPilotStatus = "Success"
     $Form.Close() 
@@ -121,7 +103,7 @@ $Button2.Add_Click({
     $Form.Refresh()
 
     $Form.WindowState = "Minimized" 
-    Set-Location -Path $workingDirectory
+    cd $workingDirectory
     .\Get-WindowsAutoPilotInfo.ps1 -GroupTag Hybrid -Online -Assign
     $Script:AutoPilotStatus = "Success"
     $Form.Close() 
@@ -152,7 +134,7 @@ $OKButton.Add_Click({
 
     $inputValue = $InputBox.Text
     $Form.WindowState = "Minimized" 
-    Set-Location -Path $workingDirectory
+    cd $workingDirectory
     .\Get-WindowsAutoPilotInfo.ps1 -GroupTag $inputValue -Online -Assign
     $Script:AutoPilotStatus = "Success"
     $Form.Close() 
@@ -195,9 +177,7 @@ if ($approfile -eq "Assigned") {
 
     function UpdateCountdownText() {
         $RemainingTime = $CountdownDuration - [math]::Round($CountdownTimer.Elapsed.TotalSeconds)
-        if ($RemainingTime -gt 0) {
-            
-        } else {
+        if ($RemainingTime -le 0) {
             $Form.Close()
         }
     }
@@ -228,6 +208,5 @@ $form.Controls.AddRange(@($Button1, $Button2, $Button3,$OKButton))
 [void][Win32]::SetForegroundWindow($form.Handle)
 $Form.ShowDialog()
 
-# --- Flag-Datei in C:\OSDCloud erstellen ---
 $FlagPath = "C:\OSDCloud\AutopilotDone.flag"
 Set-Content -Path $FlagPath -Value $Script:AutoPilotStatus -Force
