@@ -34,6 +34,10 @@ Check-AutopilotPrerequisites
 
 Stop-Transcript
 
+# Lade das Authentication Modul vorab in den Arbeitsspeicher, um das Login-Fenster zu beschleunigen
+Write-Host "Lade Graph Module für schnelleres Login vor..." -ForegroundColor Cyan
+Import-Module Microsoft.Graph.Authentication -ErrorAction SilentlyContinue
+
 $logDateiPfad = (Join-Path "$workingDirectory\" $Global:Transcript)
 $logInhalt = Get-Content -Path $logDateiPfad
 
