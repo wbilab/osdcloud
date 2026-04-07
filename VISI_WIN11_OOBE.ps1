@@ -66,12 +66,12 @@ $OSDCloudGUIParam = @'
     "SkipOOBEDeploy":  true,
     "WindowsUpdate": false,
     "WindowsUpdateDrivers": false,
-    "HPIAALL": true,
-    "HPIADrivers": true,
-    "HPIAFirmware": true,
-    "HPIASoftware": true,
-    "HPTPMUpdate": true,
-    "HPBIOSUpdate": true
+    "HPIAALL": false,
+    "HPIADrivers": false,
+    "HPIAFirmware": false,
+    "HPIASoftware": false,
+    "HPTPMUpdate": false,
+    "HPBIOSUpdate": false
 }
 '@
 If (!(Test-Path "X:\OSDCloud\Automate")) {
