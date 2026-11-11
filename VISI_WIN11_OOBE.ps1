@@ -1,6 +1,7 @@
 #================================================
 #   [PreOS] Update Module
 #================================================
+#off
 #if ((Get-MyComputerModel) -match 'Virtual') {
 #    Write-Host  -ForegroundColor Green "Setting Display Resolution to 1400x"
 #    Set-DisRes 1400
