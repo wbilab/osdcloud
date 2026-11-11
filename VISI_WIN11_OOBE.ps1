@@ -27,8 +27,8 @@ $OSDCloudGUIParam = @'
     "OSEdition":  "Pro",
     "OSLanguage":  "de-de",
     "OSImageIndex":  8,
-    "OSName":  "Windows 11 25H2 x64",
-    "OSReleaseID":  "25H2",
+    "OSName":  "Windows 11 26H2 x64",
+    "OSReleaseID":  "26H2",
     "OSVersion":  "Windows 11",
     "OSActivationValues":  [
                                 "Retail"
@@ -44,8 +44,8 @@ $OSDCloudGUIParam = @'
                                 "en-us"
                             ],
     "OSNameValues":  [
+                            "Windows 11 26H2 x64",
                             "Windows 11 25H2 x64",
-                            "Windows 11 24H2 x64",
                             "Windows 10 22H2 x64"
                         ],
     "OSReleaseIDValues":  [
